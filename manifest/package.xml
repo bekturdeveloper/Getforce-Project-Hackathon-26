@@ -1,20 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
+     <!-- CORE DEVELOPMENT ARTIFACTS -->
     <types>
         <members>*</members>
         <name>ApexClass</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>ApexComponent</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>ApexPage</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>ApexTestSuite</name>
     </types>
     <types>
         <members>*</members>
@@ -22,15 +11,160 @@
     </types>
     <types>
         <members>*</members>
-        <name>AuraDefinitionBundle</name>
+        <name>ApexPage</name>
     </types>
+    <types>
+        <members>*</members>
+        <name>ApexComponent</name>
+    </types>
+
+    <!-- LWC & AURA -->
     <types>
         <members>*</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
         <members>*</members>
-        <name>StaticResource</name>
+        <name>AuraDefinitionBundle</name>
+    </types>
+
+    <!-- OBJECTS + FIELDS + RECORD TYPES + VALIDATION RULES -->
+    <types>
+        <members>*</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>RecordType</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>ValidationRule</name>
+    </types>
+
+    <!-- AUTOMATION -->
+    <types>
+        <members>*</members>
+        <name>Flow</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>Workflow</name>
+    </types>
+    <!-- UI LAYOUTS -->
+    <types>
+        <members>*</members>
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>CompactLayout</name>
+    </types>
+
+    <!-- SECURITY -->
+    <types>
+        <members>*</members>
+        <name>Profile</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>PermissionSet</name>
+    </types>
+
+    <!-- SHARING & RULES -->
+    <types>
+        <members>*</members>
+        <name>SharingRules</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>SharingCriteriaRule</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>SharingOwnerRule</name>
+    </types>
+
+    <!-- METADATA DEFINITIONS -->
+    <types>
+        <members>*</members>
+        <name>CustomMetadata</name>
+    </types>
+
+    <!-- LABELS -->
+    <types>
+        <members>*</members>
+        <name>CustomLabel</name>
+    </types>
+
+    <!-- PERMISSIONS & ACCESS -->
+    <types>
+        <members>*</members>
+        <name>RemoteSiteSetting</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>CorsWhitelistOrigin</name>
+    </types>
+
+    <!-- INTEGRATION & NAMED CREDENTIALS -->
+    <types>
+        <members>*</members>
+        <name>NamedCredential</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>ExternalCredential</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>AuthProvider</name>
+    </types>
+
+    <!-- EMAIL -->
+    <types>
+        <members>*</members>
+        <name>EmailTemplate</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>Letterhead</name>
+    </types>
+
+    <!-- REPORTING -->
+    <types>
+        <members>*</members>
+        <name>Report</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>Dashboard</name>
+    </types>
+
+    <!-- APPLICATIONS -->
+    <types>
+        <members>*</members>
+        <name>CustomApplication</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>AppMenu</name>
+    </types>
+
+    <!-- PERMISSIONS & ROLES -->
+    <types>
+        <members>*</members>
+        <name>Role</name>
+    </types>
+
+    <!-- SETTINGS -->
+    <types>
+        <members>*</members>
+        <name>Settings</name>
     </types>
     <version>65.0</version>
 </Package>

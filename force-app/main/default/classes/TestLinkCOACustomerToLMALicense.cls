@@ -2,7 +2,7 @@
 public class TestLinkCOACustomerToLMALicense {
 	@testSetup
     static void setup() {
-        // Create test data for licenses
+        // Create test data for licenses test
         List<sfLma__License__c> licenses = new List<sfLma__License__c>();
         for (Integer i = 0; i < 5; i++) {
             sfLma__License__c license = new sfLma__License__c();

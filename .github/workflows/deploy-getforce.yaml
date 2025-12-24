@@ -2,7 +2,7 @@ name: Deploy to getforce hackathon environment on push to stage
 
 on:
   push:
-    branches: [ main ]
+    branches: [ stage ]
     paths:
       - 'force-app/**'
 

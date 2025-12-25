@@ -5,16 +5,13 @@ on:
     branches: [ stage ]
     paths:
       - 'force-app/**'
-      - '.github/workflows/**'   # optional but very useful for testing workflow changes
+      - '.github/workflows/**'
   workflow_dispatch:
 
 jobs:
   Deploy:
     runs-on: ubuntu-latest
-
-    # stage -> UAT environment "stage"
-    environment:
-      name: ${{ github.ref_name == 'stage'}}
+    environment: stage
 
     steps:
       - uses: actions/setup-node@v3
@@ -55,7 +52,6 @@ jobs:
             --instance-url "${{ vars.INSTANCE_URL }}" \
             --set-default
 
-          # Skip deploy if delta is empty
           if [ ! -d "changed-sources/force-app" ] || [ -z "$(ls -A changed-sources/force-app 2>/dev/null)" ]; then
             echo "[INFO] No metadata changes detected. Skipping deploy."
             exit 0

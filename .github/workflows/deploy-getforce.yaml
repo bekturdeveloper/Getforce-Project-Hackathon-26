@@ -1,8 +1,8 @@
-name: Deploy to getforce hackathon environment on push (stage -> stage env, main -> sffnoobs env)
+name: Deploy to getforce hackathon environment on push (stage -> stage env)
 
 on:
   push:
-    branches: [ stage, main ]
+    branches: [ stage ]
     paths:
       - 'force-app/**'
       - '.github/workflows/**'   # optional but very useful for testing workflow changes
@@ -12,10 +12,9 @@ jobs:
   Deploy:
     runs-on: ubuntu-latest
 
-    # main -> PROD environment "sffnoobs"
     # stage -> UAT environment "stage"
     environment:
-      name: ${{ github.ref_name == 'main' && 'sffnoobs' || 'stage' }}
+      name: ${{ github.ref_name == 'stage'}}
 
     steps:
       - uses: actions/setup-node@v3

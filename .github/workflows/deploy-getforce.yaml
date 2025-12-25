@@ -1,40 +1,67 @@
-name: Deploy to getforce hackathon environment on push to main
+name: Deploy Salesforce (stage -> UAT, main -> PROD)
 
 on:
   push:
-    branches: [ main ]
+    branches: [ stage, main ]
     paths:
       - 'force-app/**'
+      - '.github/workflows/**'
+  workflow_dispatch:
 
 jobs:
-  Deploy-to-sffnoobs-environment:
-      runs-on: ubuntu-latest
-      environment: sffnoobs
-      steps:
-          - uses: actions/setup-node@v3
-            with:
-              node-version: '18'
-          - name: 'Checkout source code'
-            uses: actions/checkout@v3
-            with:
-              fetch-depth: '2'
-                
-          # Now Install Salesforce CLI
-          - name: 'Install sfdx'
-            run: npm install @salesforce/cli --global
-          - name: 'Installing sfdx git delta'
-            run: | 
-                echo Y | sfdx plugins:install sfdx-git-delta
-                sfdx plugins
+  deploy:
+    runs-on: ubuntu-latest
 
-          - name: 'Create delta packages'
-            run: | 
-                mkdir changed-sources
-                sf sgd source delta --to "HEAD" --from "HEAD~1" --output changed-sources/ --generate-delta --source force-app/
-                echo "[INFO] Diff generated"
-                
-          - name: 'Deploy to environment with running all local tests'
-            run: |
-                echo "${{ secrets.JWT_SERVER_KEY }}" > server.key
-                sf org login jwt --username ${{ secrets.DEPLOYMENT_USER_NAME }} --jwt-key-file server.key --client-id ${{ secrets.CONSUMER_KEY }} --instance-url ${{ vars.INSTANCE_URL }} --set-default
-                sf project deploy start --source-dir changed-sources/force-app --test-level RunLocalTests
+    environment:
+      name: ${{ github.ref_name == 'main' && 'sffnoobs' || 'stage' }}
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Salesforce CLI
+        run: npm install -g @salesforce/cli
+
+      - name: Install sfdx-git-delta
+        run: |
+          echo Y | sf plugins install sfdx-git-delta
+          sf plugins
+
+      - name: Create delta package (safe for merges)
+        run: |
+          mkdir -p changed-sources
+          sf sgd source delta \
+            --from "${{ github.event.before }}" \
+            --to "${{ github.sha }}" \
+            --output changed-sources/ \
+            --generate-delta \
+            --source force-app/
+
+      - name: Authenticate (JWT)
+        run: |
+          echo "${{ secrets.JWT_SERVER_KEY }}" > server.key
+          sf org login jwt \
+            --username "${{ secrets.DEPLOYMENT_USER_NAME }}" \
+            --jwt-key-file server.key \
+            --client-id "${{ secrets.CONSUMER_KEY }}" \
+            --instance-url "${{ vars.INSTANCE_URL }}" \
+            --set-default
+
+      - name: Deploy delta
+        run: |
+          if [ ! -d "changed-sources/force-app" ] || [ -z "$(ls -A changed-sources/force-app 2>/dev/null)" ]; then
+            echo "[INFO] No metadata changes detected. Skipping deploy."
+            exit 0
+          fi
+
+          sf project deploy start \
+            --source-dir changed-sources/force-app \
+            --test-level RunLocalTests \
+            --wait 60

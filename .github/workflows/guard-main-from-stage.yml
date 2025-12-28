@@ -1,0 +1,13 @@
+name: Guard main from stage only
+on:
+  pull_request:
+    branches: [ main ]
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          if [ "${{ github.head_ref }}" != "stage" ]; then
+            echo "::error::Only PRs from 'stage' can be merged into 'main'."
+            exit 1
+          fi

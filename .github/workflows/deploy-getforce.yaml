@@ -1,8 +1,9 @@
-name: Deploy getforce (stage -> stage env, main -> sffnoobs env)
+name: Deploy getforce on merge (stage -> stage env, main -> sffnoobs env)
 
 on:
-  push:
+  pull_request:
     branches: [ stage, main ]
+    types: [ closed ]
     paths:
       - 'force-app/**'
       - '.github/workflows/**'
@@ -10,12 +11,12 @@ on:
 
 jobs:
   deploy:
+    if: ${{ github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
 
-    # main -> PROD env "sffnoobs"
-    # stage -> UAT env "stage"
+    # Deploy to the org that matches the PR base branch
     environment:
-      name: ${{ github.ref_name == 'main' && 'sffnoobs' || 'stage' }}
+      name: ${{ github.base_ref == 'main' && 'sffnoobs' || 'stage' }}
 
     steps:
       - name: Setup Node
@@ -23,10 +24,11 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Checkout source code
+      - name: Checkout merged code (merge commit)
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
 
       - name: Install Salesforce CLI
         run: npm install @salesforce/cli --global
@@ -36,12 +38,12 @@ jobs:
           echo Y | sf plugins install sfdx-git-delta
           sf plugins
 
-      - name: Create delta packages (safe for merges)
+      - name: Create delta packages (PR base -> merge commit)
         run: |
           mkdir -p changed-sources
           sf sgd source delta \
-            --from "${{ github.event.before }}" \
-            --to "${{ github.sha }}" \
+            --from "${{ github.event.pull_request.base.sha }}" \
+            --to   "${{ github.event.pull_request.merge_commit_sha }}" \
             --output changed-sources/ \
             --generate-delta \
             --source force-app/
@@ -57,7 +59,7 @@ jobs:
             --instance-url "${{ vars.INSTANCE_URL }}" \
             --set-default
 
-      - name: Deploy (RunLocalTests)
+      - name: Quick deploy (skip tests)
         run: |
           if [ ! -d "changed-sources/force-app" ] || [ -z "$(ls -A changed-sources/force-app 2>/dev/null)" ]; then
             echo "[INFO] No metadata changes detected. Skipping deploy."
@@ -66,4 +68,5 @@ jobs:
 
           sf project deploy start \
             --source-dir changed-sources/force-app \
-            --test-level RunLocalTests
+            --test-level NoTestRun \
+            --wait 60

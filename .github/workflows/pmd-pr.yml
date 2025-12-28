@@ -1,0 +1,38 @@
+name: PMD - Salesforce code scan
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+    branches: [ "stage", "main" ]
+    paths:
+      - "force-app/**"
+      - "pmd-ruleset.xml"
+      - ".github/workflows/**"
+
+permissions: write-all
+
+jobs:
+  pmd-code-scan:
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+      pull-requests: write
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run PMD
+        id: pmd
+        uses: pmd/pmd-github-action@v2
+        with:
+          rulesets: "pmd-ruleset.xml"
+          analyzeModifiedFilesOnly: true
+
+      - name: Upload SARIF file
+        if: hashFiles('pmd-report.sarif') != ''
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: pmd-report.sarif

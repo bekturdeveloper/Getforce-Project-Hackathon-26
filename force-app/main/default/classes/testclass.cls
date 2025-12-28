@@ -1,5 +1,5 @@
 public with sharing class testclass {
     public testclass() {
-      system.debug('Test Class Constructor 1112');
+      system.debug('Test Class Constructor new');
     }
 }

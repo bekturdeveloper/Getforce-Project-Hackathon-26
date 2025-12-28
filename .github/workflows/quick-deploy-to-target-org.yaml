@@ -1,4 +1,4 @@
-name: Deploy getforce on merge (stage -> stage env, main -> sffnoobs env)
+name: Deploy to target org
 
 on:
   pull_request:

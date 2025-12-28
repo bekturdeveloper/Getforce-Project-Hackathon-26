@@ -1,34 +1,34 @@
-name: Deploy getforce on merge (stage -> stage env, main -> sffnoobs env)
+name: Validate Salesforce Deploy (PR)
 
 on:
   pull_request:
     branches: [ stage, main ]
-    types: [ closed ]
+    types: [ opened, synchronize, reopened, ready_for_review ]
     paths:
       - 'force-app/**'
       - '.github/workflows/**'
   workflow_dispatch:
 
 jobs:
-  deploy:
-    if: ${{ github.event.pull_request.merged == true }}
+  validate:
     runs-on: ubuntu-latest
 
-    # Deploy to the org that matches the PR base branch
+    # Target org is the PR base branch:
+    # PR -> main  => validate against PROD env "sffnoobs"
+    # PR -> stage => validate against UAT env "stage"
     environment:
       name: ${{ github.base_ref == 'main' && 'sffnoobs' || 'stage' }}
 
     steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-
-      - name: Checkout merged code (merge commit)
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          ref: ${{ github.event.pull_request.merge_commit_sha }}
 
       - name: Install Salesforce CLI
         run: npm install @salesforce/cli --global
@@ -38,12 +38,12 @@ jobs:
           echo Y | sf plugins install sfdx-git-delta
           sf plugins
 
-      - name: Create delta packages (PR base -> merge commit)
+      - name: Create delta package (PR base -> PR head)
         run: |
           mkdir -p changed-sources
           sf sgd source delta \
             --from "${{ github.event.pull_request.base.sha }}" \
-            --to   "${{ github.event.pull_request.merge_commit_sha }}" \
+            --to   "${{ github.event.pull_request.head.sha }}" \
             --output changed-sources/ \
             --generate-delta \
             --source force-app/
@@ -59,14 +59,14 @@ jobs:
             --instance-url "${{ vars.INSTANCE_URL }}" \
             --set-default
 
-      - name: Quick deploy (skip tests)
+      - name: Validate only (no deploy)
         run: |
           if [ ! -d "changed-sources/force-app" ] || [ -z "$(ls -A changed-sources/force-app 2>/dev/null)" ]; then
-            echo "[INFO] No metadata changes detected. Skipping deploy."
+            echo "[INFO] No metadata changes detected. Skipping validation."
             exit 0
           fi
 
-          sf project deploy start \
+          sf project deploy validate \
             --source-dir changed-sources/force-app \
-            --test-level NoTestRun \
+            --test-level RunLocalTests \
             --wait 60

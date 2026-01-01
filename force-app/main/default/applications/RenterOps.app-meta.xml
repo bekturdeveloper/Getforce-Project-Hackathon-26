@@ -5,6 +5,8 @@
     <defaultLandingTab>standard-Home</defaultLandingTab>
     <navType>Standard</navType>
     <uiType>Lightning</uiType>
+    <formFactors>Large</formFactors>
+    <formFactors>Small</formFactors>
     <tabs>standard-Home</tabs>
     <tabs>Owner__c</tabs>
     <tabs>RentalAsset__c</tabs>

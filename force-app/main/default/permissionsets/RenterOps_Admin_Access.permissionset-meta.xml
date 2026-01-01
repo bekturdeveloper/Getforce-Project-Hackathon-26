@@ -4,9 +4,8 @@
     <hasActivationRequired>false</hasActivationRequired>
 
     <applicationVisibilities>
-        <application>RenterOps</application>
-        <default>false</default>
-        <visible>true</visible>
+    <application>RenterOps</application>
+    <visible>true</visible>
     </applicationVisibilities>
 
     <tabSettings>

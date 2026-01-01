@@ -6,4 +6,5 @@
     <referenceTo>Tenant__c</referenceTo>
     <relationshipLabel>Maintenance Requests</relationshipLabel>
     <relationshipName>MaintenanceRequests</relationshipName>
+    <deleteConstraint>Restrict</deleteConstraint>
 </CustomField>

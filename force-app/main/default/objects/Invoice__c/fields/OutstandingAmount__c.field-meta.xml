@@ -5,5 +5,5 @@
     <type>Currency</type>
     <precision>16</precision>
     <scale>2</scale>
-    <required>true</required>
+    <description>Optional for MVP; can be set by Flow/Apex based on Payments.</description>
 </CustomField>

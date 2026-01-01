@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DueDayOfMonth__c</fullName>
+    <label>Due Day of Month</label>
+    <type>Number</type>
+    <precision>2</precision>
+    <scale>0</scale>
+    <description>Allowed values 1–28 to avoid months without 29/30/31.</description>
+    <required>true</required>
+</CustomField>

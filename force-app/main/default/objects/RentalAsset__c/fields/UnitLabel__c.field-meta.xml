@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>UnitLabel__c</fullName>
+    <label>Unit Label</label>
+    <type>Text</type>
+    <length>30</length>
+    <description>Apartment/unit identifier like A-101; leave blank for houses.</description>
+</CustomField>

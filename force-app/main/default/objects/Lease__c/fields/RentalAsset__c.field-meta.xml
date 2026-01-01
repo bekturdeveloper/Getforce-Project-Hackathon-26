@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RentalAsset__c</fullName>
+    <label>Rental Asset</label>
+    <type>Lookup</type>
+    <referenceTo>RentalAsset__c</referenceTo>
+    <relationshipLabel>Leases</relationshipLabel>
+    <relationshipName>Leases</relationshipName>
+    <required>true</required>
+</CustomField>

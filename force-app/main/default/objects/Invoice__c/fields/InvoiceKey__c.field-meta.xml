@@ -4,8 +4,7 @@
     <label>Invoice Key</label>
     <type>Text</type>
     <length>20</length>
-    <description>External/unique key for data loading and lookup mapping.</description>
+    <description>Optional external key for imports/mapping.</description>
     <externalId>true</externalId>
     <unique>true</unique>
-    <required>true</required>
 </CustomField>

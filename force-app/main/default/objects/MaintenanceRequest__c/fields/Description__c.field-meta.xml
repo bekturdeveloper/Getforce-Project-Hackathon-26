@@ -4,6 +4,6 @@
     <label>Description</label>
     <type>LongTextArea</type>
     <length>32768</length>
-    <visibleLines>3</visibleLines>
+    <visibleLines>4</visibleLines>
     <description>Required via validation rule.</description>
 </CustomField>

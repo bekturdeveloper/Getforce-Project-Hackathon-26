@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>RenterOps MVP app for a single-agency property management workflow.</description>
+    <label>RenterOps</label>
+    <defaultLandingTab>standard-Home</defaultLandingTab>
+    <navType>Standard</navType>
+    <uiType>Lightning</uiType>
+    <formFactors>Large</formFactors>
+    <formFactors>Small</formFactors>
+    <tabs>standard-Home</tabs>
+    <tabs>Owner__c</tabs>
+    <tabs>RentalAsset__c</tabs>
+    <tabs>Tenant__c</tabs>
+    <tabs>Lease__c</tabs>
+    <tabs>Invoice__c</tabs>
+    <tabs>Payment__c</tabs>
+    <tabs>MaintenanceRequest__c</tabs>
+</CustomApplication>

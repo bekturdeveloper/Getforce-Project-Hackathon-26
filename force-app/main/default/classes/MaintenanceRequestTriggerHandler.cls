@@ -1,15 +1,15 @@
 public class MaintenanceRequestTriggerHandler extends TriggerHandler {
 
-private List<MaintenanceRequest__c> newMaintenanceRequest__cList;
-private List<MaintenanceRequest__c> oldMaintenanceRequest__cList;
-private Map<Id, MaintenanceRequest__c> newMaintenanceRequest__cMap;
-private Map<Id, MaintenanceRequest__c> oldMaintenanceRequest__cMap;
+private List<MaintenanceRequest__c> newMaintenanceRequestList;
+private List<MaintenanceRequest__c> oldMaintenanceRequestList;
+private Map<Id, MaintenanceRequest__c> newMaintenanceRequestMap;
+private Map<Id, MaintenanceRequest__c> oldMaintenanceRequestMap;
 
 public MaintenanceRequestTriggerHandler() {
-this.newMaintenanceRequest__cList = (List<MaintenanceRequest__c>) Trigger.new;
-this.oldMaintenanceRequest__cList = (List<MaintenanceRequest__c>) Trigger.old;
-this.newMaintenanceRequest__cMap = (Map<Id, MaintenanceRequest__c>) Trigger.newMap;
-this.oldMaintenanceRequest__cMap = (Map<Id, MaintenanceRequest__c>) Trigger.oldMap;
+this.newMaintenanceRequestList = (List<MaintenanceRequest__c>) Trigger.new;
+this.oldMaintenanceRequestList = (List<MaintenanceRequest__c>) Trigger.old;
+this.newMaintenanceRequestMap = (Map<Id, MaintenanceRequest__c>) Trigger.newMap;
+this.oldMaintenanceRequestMap = (Map<Id, MaintenanceRequest__c>) Trigger.oldMap;
 }
 
 public override void beforeInsert() {

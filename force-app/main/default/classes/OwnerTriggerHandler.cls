@@ -1,15 +1,15 @@
 public class OwnerTriggerHandler extends TriggerHandler {
 
-private List<Owner__c> newOwner__cList;
-private List<Owner__c> oldOwner__cList;
-private Map<Id, Owner__c> newOwner__cMap;
-private Map<Id, Owner__c> oldOwner__cMap;
+private List<Owner__c> newOwnerList;
+private List<Owner__c> oldOwnerList;
+private Map<Id, Owner__c> newOwnerMap;
+private Map<Id, Owner__c> oldOwnerMap;
 
 public OwnerTriggerHandler() {
-this.newOwner__cList = (List<Owner__c>) Trigger.new;
-this.oldOwner__cList = (List<Owner__c>) Trigger.old;
-this.newOwner__cMap = (Map<Id, Owner__c>) Trigger.newMap;
-this.oldOwner__cMap = (Map<Id, Owner__c>) Trigger.oldMap;
+this.newOwnerList = (List<Owner__c>) Trigger.new;
+this.oldOwnerList = (List<Owner__c>) Trigger.old;
+this.newOwnerMap = (Map<Id, Owner__c>) Trigger.newMap;
+this.oldOwnerMap = (Map<Id, Owner__c>) Trigger.oldMap;
 }
 
 public override void beforeInsert() {

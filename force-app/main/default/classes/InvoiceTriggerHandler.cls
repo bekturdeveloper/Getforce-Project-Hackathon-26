@@ -1,15 +1,15 @@
 public class InvoiceTriggerHandler extends TriggerHandler {
 
-private List<Invoice__c> newInvoice__cList;
-private List<Invoice__c> oldInvoice__cList;
-private Map<Id, Invoice__c> newInvoice__cMap;
-private Map<Id, Invoice__c> oldInvoice__cMap;
+private List<Invoice__c> newInvoiceList;
+private List<Invoice__c> oldInvoiceList;
+private Map<Id, Invoice__c> newInvoiceMap;
+private Map<Id, Invoice__c> oldInvoiceMap;
 
 public InvoiceTriggerHandler() {
-this.newInvoice__cList = (List<Invoice__c>) Trigger.new;
-this.oldInvoice__cList = (List<Invoice__c>) Trigger.old;
-this.newInvoice__cMap = (Map<Id, Invoice__c>) Trigger.newMap;
-this.oldInvoice__cMap = (Map<Id, Invoice__c>) Trigger.oldMap;
+this.newInvoiceList = (List<Invoice__c>) Trigger.new;
+this.oldInvoiceList = (List<Invoice__c>) Trigger.old;
+this.newInvoiceMap = (Map<Id, Invoice__c>) Trigger.newMap;
+this.oldInvoiceMap = (Map<Id, Invoice__c>) Trigger.oldMap;
 }
 
 public override void beforeInsert() {

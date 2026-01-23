@@ -1,15 +1,15 @@
 public class PaymentTriggerHandler extends TriggerHandler {
 
-private List<Payment__c> newPayment__cList;
-private List<Payment__c> oldPayment__cList;
-private Map<Id, Payment__c> newPayment__cMap;
-private Map<Id, Payment__c> oldPayment__cMap;
+private List<Payment__c> newPaymentList;
+private List<Payment__c> oldPaymentList;
+private Map<Id, Payment__c> newPaymentMap;
+private Map<Id, Payment__c> oldPaymentMap;
 
 public PaymentTriggerHandler() {
-this.newPayment__cList = (List<Payment__c>) Trigger.new;
-this.oldPayment__cList = (List<Payment__c>) Trigger.old;
-this.newPayment__cMap = (Map<Id, Payment__c>) Trigger.newMap;
-this.oldPayment__cMap = (Map<Id, Payment__c>) Trigger.oldMap;
+this.newPaymentList = (List<Payment__c>) Trigger.new;
+this.oldPaymentList = (List<Payment__c>) Trigger.old;
+this.newPaymentMap = (Map<Id, Payment__c>) Trigger.newMap;
+this.oldPaymentMap = (Map<Id, Payment__c>) Trigger.oldMap;
 }
 
 public override void beforeInsert() {

@@ -1,15 +1,15 @@
 public class LeaseTriggerHandler extends TriggerHandler {
 
-private List<Lease__c> newLease__cList;
-private List<Lease__c> oldLease__cList;
-private Map<Id, Lease__c> newLease__cMap;
-private Map<Id, Lease__c> oldLease__cMap;
+private List<Lease__c> newLeaseList;
+private List<Lease__c> oldLeaseList;
+private Map<Id, Lease__c> newLeaseMap;
+private Map<Id, Lease__c> oldLeaseMap;
 
 public LeaseTriggerHandler() {
-this.newLease__cList = (List<Lease__c>) Trigger.new;
-this.oldLease__cList = (List<Lease__c>) Trigger.old;
-this.newLease__cMap = (Map<Id, Lease__c>) Trigger.newMap;
-this.oldLease__cMap = (Map<Id, Lease__c>) Trigger.oldMap;
+this.newLeaseList = (List<Lease__c>) Trigger.new;
+this.oldLeaseList = (List<Lease__c>) Trigger.old;
+this.newLeaseMap = (Map<Id, Lease__c>) Trigger.newMap;
+this.oldLeaseMap = (Map<Id, Lease__c>) Trigger.oldMap;
 }
 
 public override void beforeInsert() {

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>RO Training Audit Log Admin</label>
+    <hasActivationRequired>false</hasActivationRequired>
+    <objectPermissions>
+        <object>TrainingAuditLog__c</object>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <fieldPermissions>
+        <field>TrainingAuditLog__c.City__c</field>
+        <editable>true</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <field>TrainingAuditLog__c.Status__c</field>
+        <editable>true</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>RO_TrainingAuditLog__c_Manage_Records</name>
+    </customPermissions>
+</PermissionSet>

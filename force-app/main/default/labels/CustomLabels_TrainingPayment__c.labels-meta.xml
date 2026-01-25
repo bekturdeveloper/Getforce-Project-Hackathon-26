@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>RO_TrainingPayment__c_Error_StartEndDate</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RO_TrainingPayment__c_Error_StartEndDate</shortDescription>
+        <value>Start Date must be on or before End Date.</value>
+    </labels>
+    <labels>
+        <fullName>RO_TrainingPayment__c_Error_NegativeAmounts</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RO_TrainingPayment__c_Error_NegativeAmounts</shortDescription>
+        <value>Amounts cannot be negative.</value>
+    </labels>
+    <labels>
+        <fullName>RO_TrainingPayment__c_Error_PriorityRequired</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RO_TrainingPayment__c_Error_PriorityRequired</shortDescription>
+        <value>Priority is required for Priority records.</value>
+    </labels>
+    <labels>
+        <fullName>RO_TrainingPayment__c_UI_QuickEntryTitle</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RO_TrainingPayment__c_UI_QuickEntryTitle</shortDescription>
+        <value>Quick Entry</value>
+    </labels>
+    <labels>
+        <fullName>RO_TrainingPayment__c_UI_NeedsAttentionTitle</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RO_TrainingPayment__c_UI_NeedsAttentionTitle</shortDescription>
+        <value>Needs Attention</value>
+    </labels>
+</CustomLabels>

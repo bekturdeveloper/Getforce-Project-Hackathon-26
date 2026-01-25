@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>RO Training Configuration Admin</label>
+    <hasActivationRequired>false</hasActivationRequired>
+    <objectPermissions>
+        <object>TrainingConfig__c</object>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <fieldPermissions>
+        <field>TrainingConfig__c.City__c</field>
+        <editable>true</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <field>TrainingConfig__c.Status__c</field>
+        <editable>true</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>RO_TrainingConfig_Manage_Records</name>
+    </customPermissions>
+</PermissionSet>

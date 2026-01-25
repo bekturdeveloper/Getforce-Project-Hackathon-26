@@ -1,0 +1,2 @@
+Training static resource: ROResourceCollectionsRecalculatorV2
+Generated for destructive deployment practice.

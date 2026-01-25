@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Training Web Tab for destructive deployment practice.</description>
+    <frameHeight>600</frameHeight>
+    <hasSidebar>true</hasSidebar>
+    <label>Training ROTabTenantResolver</label>
+    <motif>Custom55: Books</motif>
+    <url>https://example.com/training/37</url>
+    <urlEncodingKey>UTF-8</urlEncodingKey>
+</CustomTab>

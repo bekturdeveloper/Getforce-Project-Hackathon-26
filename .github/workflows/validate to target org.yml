@@ -66,7 +66,24 @@ jobs:
             exit 0
           fi
 
+          # Detect whether delta contains Apex (classes or triggers)
+          HAS_APEX="false"
+          if find changed-sources/force-app -type f \( -name "*.cls" -o -name "*.trigger" \) | grep -q .; then
+            HAS_APEX="true"
+          fi
+
+          # Decide test level:
+          # - For non-prod validation (stage/UAT): skip tests to avoid org-wide 75% gate
+          # - For main/prod: if Apex is present, RunLocalTests is required by Salesforce
+          if [ "${{ github.base_ref }}" = "main" ] && [ "$HAS_APEX" = "true" ]; then
+            TEST_LEVEL="RunLocalTests"
+            echo "[INFO] Base is main and Apex detected -> using RunLocalTests (required for production)."
+          else
+            TEST_LEVEL="NoTestRun"
+            echo "[INFO] Non-prod or no Apex detected -> using NoTestRun."
+          fi
+
           sf project deploy validate \
             --source-dir changed-sources/force-app \
-            --test-level RunLocalTests \
+            --test-level "$TEST_LEVEL" \
             --wait 60

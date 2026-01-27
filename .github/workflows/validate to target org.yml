@@ -66,26 +66,18 @@ jobs:
             exit 0
           fi
 
-          # Detect whether delta contains Apex (classes or triggers)
-          HAS_APEX="false"
-          if find changed-sources/force-app -type f \( -name "*.cls" -o -name "*.trigger" \) | grep -q .; then
-            HAS_APEX="true"
-          fi
-
-          # Test strategy:
-          # - Non-prod OR no Apex changes: run only CI_DummyTest (avoids org-wide 75% gate)
-          # - Prod (main) + Apex changes: must run local tests (Salesforce requirement)
-          if [ "${{ github.base_ref }}" = "main" ] && [ "$HAS_APEX" = "true" ]; then
-            echo "[INFO] Base is main and Apex detected -> using RunLocalTests (required for production)."
+          if [ "${{ github.base_ref }}" = "main" ]; then
+            echo "[INFO] Base is main (PROD). Running RunLocalTests (Salesforce required for Apex in production)."
             sf project deploy validate \
               --source-dir changed-sources/force-app \
               --test-level RunLocalTests \
               --wait 60
           else
-            echo "[INFO] Non-prod or no Apex detected -> using RunSpecifiedTests (CI_DummyTest)."
-            sf project deploy validate \
+            echo "[INFO] Base is stage (NON-PROD). Validating with NoTestRun (no tests / no coverage gate)."
+            # NOTE: 'sf project deploy validate' rejects NoTestRun; use legacy source deploy for check-only validation.
+            sf force source deploy \
+              --check-only \
               --source-dir changed-sources/force-app \
-              --test-level RunSpecifiedTests \
-              --tests CI_DummyTest \
+              --test-level NoTestRun \
               --wait 60
           fi

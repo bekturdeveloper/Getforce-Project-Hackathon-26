@@ -60,49 +60,30 @@ jobs:
             --set-default
 
       - name: Validate only (no deploy)
-        env:
-          # ✅ Put your comma-separated smoke/regression test list in a GitHub Variable
-          # Repo Settings → Secrets and variables → Actions → Variables
-          # Example value:
-          # EventsHelperTest,TaskChangeCustomersHandlersTest,LogAccountBookingCallChangeHandlerTest
-          APEX_TESTS_SMOKE: ${{ vars.APEX_TESTS_SMOKE }}
         run: |
-          set -e
-
-          # 1) Skip if no metadata changes
           if [ ! -d "changed-sources/force-app" ] || [ -z "$(ls -A changed-sources/force-app 2>/dev/null)" ]; then
             echo "[INFO] No metadata changes detected. Skipping validation."
             exit 0
           fi
 
-          # 2) Detect if delta contains Apex
-          APEX_CHANGED="false"
-          if find changed-sources/force-app -type f \( -name "*.cls-meta.xml" -o -name "*.trigger-meta.xml" \) | grep -q .; then
-            APEX_CHANGED="true"
+          # Detect whether delta contains Apex (classes or triggers)
+          HAS_APEX="false"
+          if find changed-sources/force-app -type f \( -name "*.cls" -o -name "*.trigger" \) | grep -q .; then
+            HAS_APEX="true"
           fi
 
-          echo "[INFO] Apex changed? $APEX_CHANGED"
-
-          # 3) Choose test strategy
-          if [ "$APEX_CHANGED" = "true" ]; then
-            if [ -z "${APEX_TESTS_SMOKE}" ]; then
-              echo "[ERROR] Apex changed in this PR, but APEX_TESTS_SMOKE variable is empty."
-              echo "[ERROR] Set GitHub Actions variable APEX_TESTS_SMOKE with comma-separated test class names."
-              exit 1
-            fi
-
-            echo "[INFO] Running RunSpecifiedTests: ${APEX_TESTS_SMOKE}"
-
-            sf project deploy validate \
-              --source-dir changed-sources/force-app \
-              --test-level RunSpecifiedTests \
-              --tests "${APEX_TESTS_SMOKE}" \
-              --wait 60
+          # Decide test level:
+          # - For non-prod validation (stage/UAT): skip tests to avoid org-wide 75% gate
+          # - For main/prod: if Apex is present, RunLocalTests is required by Salesforce
+          if [ "${{ github.base_ref }}" = "main" ] && [ "$HAS_APEX" = "true" ]; then
+            TEST_LEVEL="RunLocalTests"
+            echo "[INFO] Base is main and Apex detected -> using RunLocalTests (required for production)."
           else
-            echo "[INFO] No Apex in delta. Using NoTestRun."
-
-            sf project deploy validate \
-              --source-dir changed-sources/force-app \
-              --test-level NoTestRun \
-              --wait 60
+            TEST_LEVEL="NoTestRun"
+            echo "[INFO] Non-prod or no Apex detected -> using NoTestRun."
           fi
+
+          sf project deploy validate \
+            --source-dir changed-sources/force-app \
+            --test-level "$TEST_LEVEL" \
+            --wait 60

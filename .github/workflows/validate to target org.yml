@@ -72,18 +72,20 @@ jobs:
             HAS_APEX="true"
           fi
 
-          # Decide test level:
-          # - For non-prod validation (stage/UAT): skip tests to avoid org-wide 75% gate
-          # - For main/prod: if Apex is present, RunLocalTests is required by Salesforce
+          # Test strategy:
+          # - Non-prod OR no Apex changes: run only CI_DummyTest (avoids org-wide 75% gate)
+          # - Prod (main) + Apex changes: must run local tests (Salesforce requirement)
           if [ "${{ github.base_ref }}" = "main" ] && [ "$HAS_APEX" = "true" ]; then
-            TEST_LEVEL="RunLocalTests"
             echo "[INFO] Base is main and Apex detected -> using RunLocalTests (required for production)."
+            sf project deploy validate \
+              --source-dir changed-sources/force-app \
+              --test-level RunLocalTests \
+              --wait 60
           else
-            TEST_LEVEL="NoTestRun"
-            echo "[INFO] Non-prod or no Apex detected -> using NoTestRun."
+            echo "[INFO] Non-prod or no Apex detected -> using RunSpecifiedTests (CI_DummyTest)."
+            sf project deploy validate \
+              --source-dir changed-sources/force-app \
+              --test-level RunSpecifiedTests \
+              --tests CI_DummyTest \
+              --wait 60
           fi
-
-          sf project deploy validate \
-            --source-dir changed-sources/force-app \
-            --test-level "$TEST_LEVEL" \
-            --wait 60

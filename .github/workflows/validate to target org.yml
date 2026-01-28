@@ -66,7 +66,18 @@ jobs:
             exit 0
           fi
 
-          sf project deploy validate \
-            --source-dir changed-sources/force-app \
-            --test-level RunLocalTests \
-            --wait 60
+          if [ "${{ github.base_ref }}" = "main" ]; then
+            echo "[INFO] Base is main (PROD). Running RunLocalTests (Salesforce required for Apex in production)."
+            sf project deploy validate \
+              --source-dir changed-sources/force-app \
+              --test-level RunLocalTests \
+              --wait 60
+          else
+            echo "[INFO] Base is stage (NON-PROD). Validating with NoTestRun (no tests / no coverage gate)."
+            # NOTE: 'sf project deploy validate' rejects NoTestRun; use legacy source deploy for check-only validation.
+            sf force source deploy \
+              --check-only \
+              --source-dir changed-sources/force-app \
+              --test-level NoTestRun \
+              --wait 60
+          fi

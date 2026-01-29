@@ -30,8 +30,8 @@ jobs:
       - name: Install Salesforce CLI
         run: npm install @salesforce/cli --global
 
-      - name: Install legacy SFDX CLI (for force:source:deploy)
-        run: npm install sfdx-cli --global
+      - name: Install source deploy plugin (legacy deploy via sf)
+        run: sf plugins install @salesforce/plugin-source
 
       - name: Install sfdx-git-delta
         run: |
@@ -60,6 +60,7 @@ jobs:
             --set-default
 
       - name: Validate only (no deploy)
+        shell: bash
         run: |
           if [ ! -d "changed-sources/force-app" ] || [ -z "$(ls -A changed-sources/force-app 2>/dev/null)" ]; then
             echo "[INFO] No metadata changes detected. Skipping validation."
@@ -67,16 +68,15 @@ jobs:
           fi
 
           if [ "${{ github.base_ref }}" = "main" ]; then
-            echo "[INFO] Base is main (PROD). Running RunLocalTests (Salesforce required for Apex in production)."
+            echo "[INFO] Base is main (PROD). Running RunLocalTests."
             sf project deploy validate \
               --source-dir changed-sources/force-app \
               --test-level RunLocalTests \
               --wait 60
           else
-            echo "[INFO] Base is stage (NON-PROD). Validating with NoTestRun (no tests / no coverage gate)."
-            sfdx force:source:deploy \
-              --checkonly \
-              --sourcepath changed-sources/force-app \
-              --testlevel NoTestRun \
+            echo "[INFO] Base is stage (NON-PROD). Validating with NoTestRun."
+            sf deploy metadata validate \
+              --source-dir changed-sources/force-app \
+              --test-level NoTestRun \
               --wait 60
           fi

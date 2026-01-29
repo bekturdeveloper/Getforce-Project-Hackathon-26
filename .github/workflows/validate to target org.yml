@@ -66,6 +66,17 @@ jobs:
             exit 0
           fi
 
+          # If no Apex in the delta, avoid coverage gate by using NoTestRun
+          if ! find changed-sources/force-app -type f \( -path "*/classes/*.cls" -o -path "*/triggers/*.trigger" \) | grep -q .; then
+            echo "[INFO] No Apex changes detected. Validating with NoTestRun (no 75% coverage gate)."
+            sf project deploy validate \
+              --source-dir changed-sources/force-app \
+              --test-level NoTestRun \
+              --wait 60
+            exit 0
+          fi
+
+          echo "[INFO] Apex detected. Running RunLocalTests (75% coverage required by Salesforce)."
           sf project deploy validate \
             --source-dir changed-sources/force-app \
             --test-level RunLocalTests \

@@ -16,6 +16,9 @@ permissions:
 jobs:
   validate:
     runs-on: ubuntu-latest
+
+    # PR -> main  => PROD env "sffnoobs"
+    # PR -> stage => UAT env "stage"
     environment:
       name: ${{ github.base_ref == 'main' && 'sffnoobs' || 'stage' }}
 
@@ -59,7 +62,7 @@ jobs:
             --instance-url "${{ vars.INSTANCE_URL }}" \
             --set-default
 
-      - name: Validate (async) and comment job id
+      - name: Validate (async) + comment job id for quick deploy
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
@@ -80,18 +83,33 @@ jobs:
 
           echo "[INFO] Validating with test level: ${TEST_LEVEL}"
 
-          # Start async validation -> capture job id
-          JOB_ID="$(sf project deploy validate \
+          # Start async validation and capture full JSON output
+          VALIDATE_JSON="$(sf project deploy validate \
             --source-dir changed-sources/force-app \
             --test-level "${TEST_LEVEL}" \
             --async \
-            --json | node -p "JSON.parse(require('fs').readFileSync(0,'utf8')).result.id")"
+            --json)"
+
+          echo "[INFO] Raw validate JSON:"
+          echo "$VALIDATE_JSON"
+
+          # Robustly extract job id from possible shapes
+          JOB_ID="$(printf '%s' "$VALIDATE_JSON" | node -e "
+            const fs=require('fs');
+            const s=fs.readFileSync(0,'utf8');
+            let j;
+            try { j=JSON.parse(s); } catch(e) { console.error('[ERROR] Invalid JSON from sf'); process.exit(1); }
+            if (!j.result) { console.error('[ERROR] Missing result in sf output:', j); process.exit(1); }
+            const id = j.result.id || j.result.jobId || (j.result.deploy && j.result.deploy.id);
+            if (!id) { console.error('[ERROR] Could not find deploy id in sf output:', j); process.exit(1); }
+            process.stdout.write(id);
+          ")"
 
           echo "[INFO] Validation job id: ${JOB_ID}"
 
-          # Wait for completion (fail if validation fails)
+          # Wait for completion (fails job if validation fails)
           sf project deploy report --job-id "${JOB_ID}" --wait 60
 
-          # Write comment into PR so the push workflow can quick-deploy later
+          # Comment into PR so post-merge workflow can quick-deploy later
           gh pr comment "${{ github.event.pull_request.number }}" \
             --body "SF_VALIDATION_JOB_ID=${JOB_ID}"

@@ -120,6 +120,7 @@ private class DeploymentCoverageTest {
         MaintenanceRequest__c mr1 = new MaintenanceRequest__c(
             Name = 'MR 1',
             RentalAsset__c = ra1.Id,
+            Description__c = 'test',
             RequestedAt__c = System.now()
         );
         runAllDml(mr1, new Map<String, Object>{ 'RequestedAt__c' => System.now().addMinutes(1) });

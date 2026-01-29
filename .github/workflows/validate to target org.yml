@@ -1,49 +1,48 @@
-name: Validate Salesforce Deploy (PR)
+name: Deploy to target org
 
 on:
   pull_request:
     branches: [ stage, main ]
-    types: [ opened, synchronize, reopened, ready_for_review ]
+    types: [ closed ]
     paths:
       - 'force-app/**'
       - '.github/workflows/**'
   workflow_dispatch:
 
 jobs:
-  validate:
+  deploy:
+    if: ${{ github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
 
     environment:
       name: ${{ github.base_ref == 'main' && 'sffnoobs' || 'stage' }}
 
     steps:
-      - name: Checkout PR head
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
+      - name: Checkout merged code (merge commit)
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+
       - name: Install Salesforce CLI
         run: npm install @salesforce/cli --global
-
-      - name: Install source deploy plugin (legacy deploy via sf)
-        run: sf plugins install @salesforce/plugin-source
 
       - name: Install sfdx-git-delta
         run: |
           echo Y | sf plugins install sfdx-git-delta
           sf plugins
 
-      - name: Create delta package (PR base -> PR head)
+      - name: Create delta packages (PR base -> merge commit)
         run: |
           mkdir -p changed-sources
           sf sgd source delta \
             --from "${{ github.event.pull_request.base.sha }}" \
-            --to   "${{ github.event.pull_request.head.sha }}" \
+            --to   "${{ github.event.pull_request.merge_commit_sha }}" \
             --output changed-sources/ \
             --generate-delta \
             --source force-app/
@@ -59,23 +58,33 @@ jobs:
             --instance-url "${{ vars.INSTANCE_URL }}" \
             --set-default
 
-      - name: Validate only (no deploy)
-        shell: bash
+      - name: Deploy (stage) or Validate+QuickDeploy (prod)
         run: |
           if [ ! -d "changed-sources/force-app" ] || [ -z "$(ls -A changed-sources/force-app 2>/dev/null)" ]; then
-            echo "[INFO] No metadata changes detected. Skipping validation."
+            echo "[INFO] No metadata changes detected. Skipping."
             exit 0
           fi
 
           if [ "${{ github.base_ref }}" = "main" ]; then
-            echo "[INFO] Base is main (PROD). Running RunLocalTests."
+            echo "[INFO] PROD: Validate with tests, then Quick Deploy."
+
+            # Validate (tests required for prod; validate command doesn't accept NoTestRun)
             sf project deploy validate \
               --source-dir changed-sources/force-app \
               --test-level RunLocalTests \
+              --wait 60 \
+              --json > validate-result.json
+
+            # Extract job id and quick deploy
+            JOB_ID=$(node -p "JSON.parse(require('fs').readFileSync('validate-result.json','utf8')).result.id")
+            echo "[INFO] Validated deploy id: $JOB_ID"
+
+            sf project deploy quick \
+              --job-id "$JOB_ID" \
               --wait 60
           else
-            echo "[INFO] Base is stage (NON-PROD). Validating with NoTestRun."
-            sf deploy metadata validate \
+            echo "[INFO] STAGE: Deploy with NoTestRun."
+            sf project deploy start \
               --source-dir changed-sources/force-app \
               --test-level NoTestRun \
               --wait 60

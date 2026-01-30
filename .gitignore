@@ -29,6 +29,16 @@ node_modules/
 
 # Eslint cache
 .eslintcache
+force-app/main/default/settings/**
+force-app/main/default/profiles/**
+force-app/main/default/appMenus/**
+force-app/main/default/applications/standard__LightningInstrumentation.app-meta.xml
+force-app/main/default/objects/EnvironmentHubInvitation/**
+force-app/main/default/objects/EnvironmentHubMember/**
+force-app/main/default/objects/EnvironmentHubMemberRel/**
+force-app/main/default/objects/SsoUserMapping/**
+force-app/main/default/objects/ObjectMilestonePauseTime/**
+
 
 # MacOS system files
 .DS_Store

@@ -1,33 +1,34 @@
-name: Deploy to target org
+name: Validate Salesforce Deploy (PR)
 
 on:
   pull_request:
     branches: [ stage, main ]
-    types: [ closed ]
+    types: [ opened, synchronize, reopened, ready_for_review ]
     paths:
       - 'force-app/**'
       - '.github/workflows/**'
   workflow_dispatch:
 
 jobs:
-  deploy:
-    if: ${{ github.event.pull_request.merged == true }}
+  validate:
     runs-on: ubuntu-latest
 
+    # Target org is the PR base branch:
+    # PR -> main  => validate against PROD env "sffnoobs"
+    # PR -> stage => validate against UAT env "stage"
     environment:
       name: ${{ github.base_ref == 'main' && 'sffnoobs' || 'stage' }}
 
     steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-
-      - name: Checkout merged code (merge commit)
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          ref: ${{ github.event.pull_request.merge_commit_sha }}
 
       - name: Install Salesforce CLI
         run: npm install @salesforce/cli --global
@@ -37,12 +38,13 @@ jobs:
           echo Y | sf plugins install sfdx-git-delta
           sf plugins
 
-      - name: Create delta packages (PR base -> merge commit)
+      - name: Create delta package (PR base -> PR head)
         run: |
+          set -e
           mkdir -p changed-sources
           sf sgd source delta \
             --from "${{ github.event.pull_request.base.sha }}" \
-            --to   "${{ github.event.pull_request.merge_commit_sha }}" \
+            --to   "${{ github.event.pull_request.head.sha }}" \
             --output changed-sources/ \
             --generate-delta \
             --source force-app/
@@ -50,6 +52,7 @@ jobs:
 
       - name: Authenticate (JWT)
         run: |
+          set -e
           echo "${{ secrets.JWT_SERVER_KEY }}" > server.key
           sf org login jwt \
             --username "${{ secrets.DEPLOYMENT_USER_NAME }}" \
@@ -58,34 +61,30 @@ jobs:
             --instance-url "${{ vars.INSTANCE_URL }}" \
             --set-default
 
-      - name: Deploy (stage) or Validate+QuickDeploy (prod)
+      - name: Validate only (no deploy)
+        shell: bash
         run: |
+          set -e
+
           if [ ! -d "changed-sources/force-app" ] || [ -z "$(ls -A changed-sources/force-app 2>/dev/null)" ]; then
-            echo "[INFO] No metadata changes detected. Skipping."
+            echo "[INFO] No metadata changes detected. Skipping validation."
             exit 0
           fi
 
-          if [ "${{ github.base_ref }}" = "main" ]; then
-            echo "[INFO] PROD: Validate with tests, then Quick Deploy."
+          BASE_REF="${{ github.base_ref }}"
+          echo "[INFO] PR base branch: ${BASE_REF}"
 
-            # Validate (tests required for prod; validate command doesn't accept NoTestRun)
+          if [ "${BASE_REF}" = "stage" ]; then
+            echo "[INFO] Stage/UAT: validate without running tests (NoTestRun)"
+            sf project deploy start \
+              --dry-run \
+              --source-dir changed-sources/force-app \
+              --test-level NoTestRun \
+              --wait 60
+          else
+            echo "[INFO] Main/Prod: validate with RunLocalTests"
             sf project deploy validate \
               --source-dir changed-sources/force-app \
               --test-level RunLocalTests \
-              --wait 60 \
-              --json > validate-result.json
-
-            # Extract job id and quick deploy
-            JOB_ID=$(node -p "JSON.parse(require('fs').readFileSync('validate-result.json','utf8')).result.id")
-            echo "[INFO] Validated deploy id: $JOB_ID"
-
-            sf project deploy quick \
-              --job-id "$JOB_ID" \
-              --wait 60
-          else
-            echo "[INFO] STAGE: Deploy with NoTestRun."
-            sf project deploy start \
-              --source-dir changed-sources/force-app \
-              --test-level NoTestRun \
               --wait 60
           fi

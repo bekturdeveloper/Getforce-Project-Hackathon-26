@@ -10,3 +10,10 @@ package.xml
 
 # LWC Jest
 **/__tests__/**
+
+**/settings/**
+**/appMenus/**
+**/applications/standard__*
+**/objects/EnvironmentHub*
+**/*Territory2*
+**/*Analytics*

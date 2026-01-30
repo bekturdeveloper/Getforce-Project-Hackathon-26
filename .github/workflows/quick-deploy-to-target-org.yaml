@@ -1,56 +1,41 @@
-name: Deploy to target org
+name: Quick Deploy (after merge)
 
 on:
-  pull_request:
+  push:
     branches: [ stage, main ]
-    types: [ closed ]
     paths:
       - 'force-app/**'
       - '.github/workflows/**'
   workflow_dispatch:
 
-jobs:
-  deploy:
-    if: ${{ github.event.pull_request.merged == true }}
-    runs-on: ubuntu-latest
+permissions:
+  contents: read
+  pull-requests: read
+  issues: read
 
-    # Deploy to the org that matches the PR base branch
+jobs:
+  quick_deploy:
+    runs-on: ubuntu-latest
     environment:
-      name: ${{ github.base_ref == 'main' && 'sffnoobs' || 'stage' }}
+      name: ${{ github.ref_name == 'main' && 'sffnoobs' || 'stage' }}
 
     steps:
+      - name: Checkout merged branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Checkout merged code (merge commit)
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          ref: ${{ github.event.pull_request.merge_commit_sha }}
-
       - name: Install Salesforce CLI
         run: npm install @salesforce/cli --global
 
-      - name: Install sfdx-git-delta
-        run: |
-          echo Y | sf plugins install sfdx-git-delta
-          sf plugins
-
-      - name: Create delta packages (PR base -> merge commit)
-        run: |
-          mkdir -p changed-sources
-          sf sgd source delta \
-            --from "${{ github.event.pull_request.base.sha }}" \
-            --to   "${{ github.event.pull_request.merge_commit_sha }}" \
-            --output changed-sources/ \
-            --generate-delta \
-            --source force-app/
-          echo "[INFO] Diff generated"
-
       - name: Authenticate (JWT)
         run: |
+          set -euo pipefail
           echo "${{ secrets.JWT_SERVER_KEY }}" > server.key
           sf org login jwt \
             --username "${{ secrets.DEPLOYMENT_USER_NAME }}" \
@@ -59,14 +44,79 @@ jobs:
             --instance-url "${{ vars.INSTANCE_URL }}" \
             --set-default
 
-      - name: Quick deploy (skip tests)
+      - name: Quick deploy using PR validation job id
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
         run: |
-          if [ ! -d "changed-sources/force-app" ] || [ -z "$(ls -A changed-sources/force-app 2>/dev/null)" ]; then
-            echo "[INFO] No metadata changes detected. Skipping deploy."
+          set -euo pipefail
+
+          SHA="${{ github.sha }}"
+          BRANCH="${{ github.ref_name }}"
+          REPO="${{ github.repository }}"
+
+          echo "[INFO] Commit SHA: ${SHA}"
+          echo "[INFO] Branch: ${BRANCH}"
+
+          # Find PR(s) associated with this commit; prefer the PR merged into this branch
+          PR_NUMBER="$(gh api -H "Accept: application/vnd.github+json" "/repos/${REPO}/commits/${SHA}/pulls" \
+            | node -e '
+                const fs=require("fs");
+                const data=fs.readFileSync(0,"utf8").trim();
+                const arr = data ? JSON.parse(data) : [];
+                const branch = process.env.BRANCH;
+                const mergedIntoBranch = arr.find(pr => pr && pr.base && pr.base.ref === branch && pr.merged_at);
+                const any = arr[0];
+                const pr = mergedIntoBranch || any;
+                process.stdout.write(pr && pr.number ? String(pr.number) : "");
+              ')"
+
+          if [ -z "${PR_NUMBER}" ]; then
+            echo "[WARN] No PR found for this commit. Falling back to normal deploy."
+            if [ "${BRANCH}" = "stage" ]; then
+              sf project deploy start --source-dir force-app --test-level NoTestRun --wait 60
+            else
+              sf project deploy start --source-dir force-app --test-level RunLocalTests --wait 60
+            fi
             exit 0
           fi
 
-          sf project deploy start \
-            --source-dir changed-sources/force-app \
-            --test-level NoTestRun \
-            --wait 60
+          echo "[INFO] Found PR: #${PR_NUMBER}"
+
+          # Fetch PR issue comments (paginate safely) and extract latest SF_VALIDATION_JOB_ID
+          COMMENTS_JSON="$(gh api -H "Accept: application/vnd.github+json" \
+            "/repos/${REPO}/issues/${PR_NUMBER}/comments?per_page=100" \
+            --paginate --slurp || echo '[]')"
+
+          JOB_ID="$(printf '%s' "${COMMENTS_JSON}" | node -e '
+              const fs=require("fs");
+              const raw=fs.readFileSync(0,"utf8").trim();
+              const pages = raw ? JSON.parse(raw) : [];
+              // --slurp makes an array of pages; each page is an array of comments
+              const comments = Array.isArray(pages) && pages.length && Array.isArray(pages[0])
+                ? pages.flat()
+                : pages;
+
+              const bodies = (comments || []).map(c => (c && c.body) ? c.body : "");
+              const hits = bodies.filter(b => b.includes("SF_VALIDATION_JOB_ID="));
+              if (!hits.length) process.exit(0);
+
+              const last = hits[hits.length - 1];
+              const m = last.match(/SF_VALIDATION_JOB_ID=([A-Za-z0-9]{15,18})/);
+              if (m) process.stdout.write(m[1]);
+            ')"
+
+          if [ -z "${JOB_ID}" ]; then
+            echo "[WARN] No SF_VALIDATION_JOB_ID found in PR comments. Falling back to normal deploy."
+            if [ "${BRANCH}" = "stage" ]; then
+              sf project deploy start --source-dir force-app --test-level NoTestRun --wait 60
+            else
+              sf project deploy start --source-dir force-app --test-level RunLocalTests --wait 60
+            fi
+            exit 0
+          fi
+
+          # Optional sanity check: validated deploy IDs usually look like Salesforce IDs (15/18 chars)
+          if ! [[ "${JOB_ID}" =~ ^[A-Za-z0-9]{15,18}$ ]]; then
+            echo "[WARN] Extracted JOB_ID doesn't look like a Salesforce ID: '${JOB_ID}'. Falling back."
+            if [ "${BRANCH}" = "stage" ]; then

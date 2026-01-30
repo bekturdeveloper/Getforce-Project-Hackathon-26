@@ -1,4 +1,5 @@
 name: Validate Salesforce Deploy (PR)
+run-name: ${{ github.base_ref == 'stage' && 'Validating to UAT' || 'Validating to PROD' }}
 
 on:
   pull_request:

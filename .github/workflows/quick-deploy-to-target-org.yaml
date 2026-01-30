@@ -11,6 +11,7 @@ on:
 permissions:
   contents: read
   pull-requests: read
+  issues: read
 
 jobs:
   quick_deploy:
@@ -34,6 +35,7 @@ jobs:
 
       - name: Authenticate (JWT)
         run: |
+          set -euo pipefail
           echo "${{ secrets.JWT_SERVER_KEY }}" > server.key
           sf org login jwt \
             --username "${{ secrets.DEPLOYMENT_USER_NAME }}" \
@@ -44,47 +46,77 @@ jobs:
 
       - name: Quick deploy using PR validation job id
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
 
           SHA="${{ github.sha }}"
-          echo "[INFO] Commit SHA: ${SHA}"
-          echo "[INFO] Branch: ${{ github.ref_name }}"
+          BRANCH="${{ github.ref_name }}"
+          REPO="${{ github.repository }}"
 
-          # Find PR(s) associated to this commit
-          PR_NUMBER="$(gh api \
-            -H "Accept: application/vnd.github+json" \
-            "/repos/${{ github.repository }}/commits/${SHA}/pulls" \
-            | node -p "const a=JSON.parse(require('fs').readFileSync(0,'utf8')); console.log((a && a[0] && a[0].number) ? a[0].number : '')")"
+          echo "[INFO] Commit SHA: ${SHA}"
+          echo "[INFO] Branch: ${BRANCH}"
+
+          # Find PR(s) associated with this commit; prefer the PR merged into this branch
+          PR_NUMBER="$(gh api -H "Accept: application/vnd.github+json" "/repos/${REPO}/commits/${SHA}/pulls" \
+            | node -e '
+                const fs=require("fs");
+                const data=fs.readFileSync(0,"utf8").trim();
+                const arr = data ? JSON.parse(data) : [];
+                const branch = process.env.BRANCH;
+                const mergedIntoBranch = arr.find(pr => pr && pr.base && pr.base.ref === branch && pr.merged_at);
+                const any = arr[0];
+                const pr = mergedIntoBranch || any;
+                process.stdout.write(pr && pr.number ? String(pr.number) : "");
+              ')"
 
           if [ -z "${PR_NUMBER}" ]; then
             echo "[WARN] No PR found for this commit. Falling back to normal deploy."
-            sf project deploy start --source-dir force-app --wait 60
+            if [ "${BRANCH}" = "stage" ]; then
+              sf project deploy start --source-dir force-app --test-level NoTestRun --wait 60
+            else
+              sf project deploy start --source-dir force-app --test-level RunLocalTests --wait 60
+            fi
             exit 0
           fi
 
           echo "[INFO] Found PR: #${PR_NUMBER}"
 
-          # Read PR comments and extract last SF_VALIDATION_JOB_ID
-          JOB_ID="$(gh api \
-            -H "Accept: application/vnd.github+json" \
-            "/repos/${{ github.repository }}/issues/${PR_NUMBER}/comments?per_page=100" \
-            | node -p "
-              const c=JSON.parse(require('fs').readFileSync(0,'utf8'));
-              const hits=c.map(x=>x.body||'').filter(b=>b.includes('SF_VALIDATION_JOB_ID='));
-              if(!hits.length){ console.log(''); process.exit(0); }
-              const last=hits[hits.length-1];
-              const m=last.match(/SF_VALIDATION_JOB_ID=([A-Za-z0-9]+)/);
-              console.log(m?m[1]:'');
-            ")"
+          # Fetch PR issue comments (paginate safely) and extract latest SF_VALIDATION_JOB_ID
+          COMMENTS_JSON="$(gh api -H "Accept: application/vnd.github+json" \
+            "/repos/${REPO}/issues/${PR_NUMBER}/comments?per_page=100" \
+            --paginate --slurp || echo '[]')"
+
+          JOB_ID="$(printf '%s' "${COMMENTS_JSON}" | node -e '
+              const fs=require("fs");
+              const raw=fs.readFileSync(0,"utf8").trim();
+              const pages = raw ? JSON.parse(raw) : [];
+              // --slurp makes an array of pages; each page is an array of comments
+              const comments = Array.isArray(pages) && pages.length && Array.isArray(pages[0])
+                ? pages.flat()
+                : pages;
+
+              const bodies = (comments || []).map(c => (c && c.body) ? c.body : "");
+              const hits = bodies.filter(b => b.includes("SF_VALIDATION_JOB_ID="));
+              if (!hits.length) process.exit(0);
+
+              const last = hits[hits.length - 1];
+              const m = last.match(/SF_VALIDATION_JOB_ID=([A-Za-z0-9]{15,18})/);
+              if (m) process.stdout.write(m[1]);
+            ')"
 
           if [ -z "${JOB_ID}" ]; then
             echo "[WARN] No SF_VALIDATION_JOB_ID found in PR comments. Falling back to normal deploy."
-            sf project deploy start --source-dir force-app --wait 60
+            if [ "${BRANCH}" = "stage" ]; then
+              sf project deploy start --source-dir force-app --test-level NoTestRun --wait 60
+            else
+              sf project deploy start --source-dir force-app --test-level RunLocalTests --wait 60
+            fi
             exit 0
           fi
 
-          echo "[INFO] Quick deploying using job id: ${JOB_ID}"
-          sf project deploy quick --job-id "${JOB_ID}" --wait 60
+          # Optional sanity check: validated deploy IDs usually look like Salesforce IDs (15/18 chars)
+          if ! [[ "${JOB_ID}" =~ ^[A-Za-z0-9]{15,18}$ ]]; then
+            echo "[WARN] Extracted JOB_ID doesn't look like a Salesforce ID: '${JOB_ID}'. Falling back."
+            if [ "${BRANCH}" = "stage" ]; then

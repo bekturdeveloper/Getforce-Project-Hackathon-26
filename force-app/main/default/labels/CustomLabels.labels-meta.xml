@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>RenterOps_Lease_AssetChangeBlocked_Invoices</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RenterOps_Lease_AssetChangeBlocked_Invoices</shortDescription>
+        <value>Cannot change the rental asset because invoices already exist for this lease.</value>
+    </labels>
+</CustomLabels>

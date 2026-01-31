@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
     <labels>
+        <fullName>RenterOps_Payment_DeleteBlocked_Completed</fullName>
+        <categories>Error Messages</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Error message when trying to delete completed payment</shortDescription>
+        <value>Cannot delete this Payment because it is completed.</value>
+    </labels>
+    <labels>
         <fullName>RenterOps_Lease_AssetChangeBlocked_Invoices</fullName>
         <language>en_US</language>
         <protected>false</protected>

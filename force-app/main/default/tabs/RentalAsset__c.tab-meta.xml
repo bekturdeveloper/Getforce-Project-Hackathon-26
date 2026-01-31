@@ -2,6 +2,5 @@
 <CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
     <customObject>true</customObject>
     <description>Manage rentable assets (apartments/houses).</description>
-    <label>Rental Assets</label>
-    <motif>Custom2: Star</motif>
+    <motif>Custom2: Fan</motif>
 </CustomTab>

@@ -21,7 +21,7 @@ public override void afterInsert() {
 }
 
 public override void beforeUpdate() {
-    LeaseService.blockAssetChangeWithInvoices(this.oldLeaseMap, this.newLeaseMap);
+
 }
 
 public override void afterUpdate() {

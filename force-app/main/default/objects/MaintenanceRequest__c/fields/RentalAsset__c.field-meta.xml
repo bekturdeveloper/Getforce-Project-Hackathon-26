@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>RentalAsset__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
     <label>Rental Asset</label>
-    <type>Lookup</type>
     <referenceTo>RentalAsset__c</referenceTo>
     <relationshipLabel>Maintenance Requests</relationshipLabel>
     <relationshipName>MaintenanceRequests</relationshipName>
-    <deleteConstraint>Restrict</deleteConstraint>
     <required>true</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
 </CustomField>

@@ -269,13 +269,6 @@ static void testLeaseDeleteBlockedWhenInvoiceExists() {
             'RentalAsset for non-Paid invoice lease updated incorrectly');
     }
 
-
-}
-@IsTest
-public class LeaseServiceTest {
-
-    // ---------- Helper methods ----------
-
    private static Owner__c createOwner() {
     Owner__c own = new Owner__c(
         Name = 'Test Owner'
@@ -442,6 +435,4 @@ public class LeaseServiceTest {
         System.assertEquals(newAsset2.Id, updatedLease.RentalAsset__c,
             'RentalAsset for non-Paid invoice lease updated incorrectly');
     }
-
-
 }

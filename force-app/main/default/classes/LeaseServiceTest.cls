@@ -271,7 +271,6 @@ static void testLeaseDeleteBlockedWhenInvoiceExists() {
 
 
 }
-=======
 @IsTest
 public class LeaseServiceTest {
 

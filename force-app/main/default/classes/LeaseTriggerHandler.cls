@@ -29,7 +29,7 @@ public override void afterUpdate() {
 }
 
 public override void beforeDelete() {
-
+    LeaseService.RenterOpsLeaseDeleteBlockedFinancials(oldLeaseList);
 }
 
 public override void afterDelete() {

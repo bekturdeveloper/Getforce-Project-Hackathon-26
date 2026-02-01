@@ -1,6 +1,5 @@
 public with sharing class LeaseService {
 
-<<<<<<< HEAD
 /**
 * Demonstrative method to show where put trigger logic.
 *
@@ -27,10 +26,6 @@ public static void RenterOpsLeaseDeleteBlockedFinancials(List<Lease__c> oldLease
         }
     } 
 
-
-
-
-=======
     public static void blockAssetChangeWithInvoices(Map<Id, Lease__c> oldMap, Map<Id, Lease__c> newMap) {
 
         Set<Id> leaseIdsToCheck = new Set<Id>();
@@ -66,6 +61,3 @@ public static void RenterOpsLeaseDeleteBlockedFinancials(List<Lease__c> oldLease
         }
     }
 }
-
-
->>>>>>> stage

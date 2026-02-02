@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
     <labels>
+        <fullName>RenterOps_Payment_OverpaymentBlocked</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Block overpayment on payment completion</shortDescription>
+        <value>Payment amount cannot exceed the invoice outstanding amount.</value>
+    </labels>
+     <labels>
         <fullName>RenterOps_Lease_AssetChangeBlocked_Invoices</fullName>
         <language>en_US</language>
         <protected>false</protected>

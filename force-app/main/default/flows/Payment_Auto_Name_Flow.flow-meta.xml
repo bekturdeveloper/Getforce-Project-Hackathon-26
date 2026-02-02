@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>Set_Payment_Name</name>
+        <label>Set Payment Name</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Name</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>PaymentNameFormula</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <decisions>
+        <name>Check_Bypass</name>
+        <label>Check Bypass</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Set_Payment_Name</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Bypass</defaultConnectorLabel>
+        <rules>
+            <name>Has_Bypass</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Permission.RenterOps_Flow_Bypass</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Has Bypass</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <formulas>
+        <name>PaymentNameFormula</name>
+        <dataType>String</dataType>
+        <expression>&quot;PAY-&quot; &amp;
+ TEXT(YEAR(TODAY())) &amp;  
+IF(LEN(TEXT(MONTH(TODAY())))=1, &quot;0&quot; &amp; TEXT(MONTH(TODAY())), TEXT(MONTH(TODAY())) ) &amp;
+IF(LEN(TEXT(DAY(TODAY())))=1, &quot;0&quot; &amp; TEXT(DAY(TODAY())), TEXT(DAY(TODAY())) ) &amp; 
+&quot;-&quot; &amp;
+RIGHT({!$Record.Invoice__c}, 6)</expression>
+    </formulas>
+    <interviewLabel>Payment Auto Name Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Payment Auto Name Flow</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Check_Bypass</targetReference>
+        </connector>
+        <object>Payment__c</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

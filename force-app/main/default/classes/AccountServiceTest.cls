@@ -3,6 +3,6 @@ private class AccountServiceTest {
 
 @IsTest
 static void demonstrativeMethodTest() {
- system.debug('test');
+ system.debug('test 2');
 }
 }

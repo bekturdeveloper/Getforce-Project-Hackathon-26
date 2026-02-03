@@ -7,6 +7,12 @@
         <shortDescription>Block overpayment on payment completion</shortDescription>
         <value>Payment amount cannot exceed the invoice outstanding amount.</value>
     </labels>
+        <fullName>RenterOps_Lease_UpdateBlocked_FinancialTerms</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RenterOps_Lease_UpdateBlocked_FinancialTerms</shortDescription>
+        <value>Cannot change lease financial terms because invoices already exist. </value>
+     </labels>
      <labels>
         <fullName>RenterOps_Lease_DeleteBlocked_Financials</fullName>
         <language>en_US</language>

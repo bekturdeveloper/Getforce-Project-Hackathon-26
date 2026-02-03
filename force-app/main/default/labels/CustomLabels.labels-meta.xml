@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
     <labels>
+        <fullName>RenterOps_Lease_UpdateBlocked_FinancialTerms</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RenterOps_Lease_UpdateBlocked_FinancialTerms</shortDescription>
+        <value>Cannot change lease financial terms because invoices already exist. </value>
+     </labels>
+     <labels>
+        <fullName>RenterOps_Lease_DeleteBlocked_Financials</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RenterOps_Lease_DeleteBlocked_Financials</shortDescription>
+        <value>Cannot delete this Lease because it has financial records.</value>
+    </labels>
+    <labels>
         <fullName>RenterOps_Payment_DeleteBlocked_Completed</fullName>
         <categories>Error Messages</categories>
         <language>en_US</language>

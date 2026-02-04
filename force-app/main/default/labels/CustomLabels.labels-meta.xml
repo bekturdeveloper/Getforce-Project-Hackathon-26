@@ -8,4 +8,39 @@
         <shortDescription>Error message when trying to delete a Maintenance Request that is in progress or</shortDescription>
         <value>Cannot delete this Maintenance Request because it is already in progress or closed.</value>
     </labels>
+    <labels>
+        <fullName>RenterOps_Payment_OverpaymentBlocked</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Block overpayment on payment completion</shortDescription>
+        <value>Payment amount cannot exceed the invoice outstanding amount.</value>
+    </labels>
+        <fullName>RenterOps_Lease_UpdateBlocked_FinancialTerms</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RenterOps_Lease_UpdateBlocked_FinancialTerms</shortDescription>
+        <value>Cannot change lease financial terms because invoices already exist. </value>
+     </labels>
+     <labels>
+        <fullName>RenterOps_Lease_DeleteBlocked_Financials</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RenterOps_Lease_DeleteBlocked_Financials</shortDescription>
+        <value>Cannot delete this Lease because it has financial records.</value>
+    </labels>
+    <labels>
+        <fullName>RenterOps_Payment_DeleteBlocked_Completed</fullName>
+        <categories>Error Messages</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Error message when trying to delete completed payment</shortDescription>
+        <value>Cannot delete this Payment because it is completed.</value>
+    </labels>
+    <labels>
+        <fullName>RenterOps_Lease_AssetChangeBlocked_Invoices</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RenterOps_Lease_AssetChangeBlocked_Invoices</shortDescription>
+        <value>Cannot change the rental asset because invoices already exist for this lease.</value>
+    </labels>
 </CustomLabels>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Block_Financial_Updates_When_Invoices_Ex</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+    Invoice_Count__c &gt; 0,
+    OR(
+        ISCHANGED(MonthlyRent__c),
+        ISCHANGED(DueDayOfMonth__c),
+        ISCHANGED(StartDate__c),
+        ISCHANGED(EndDate__c)
+    )
+)</errorConditionFormula>
+    <errorMessage>Cannot change lease financial terms because invoices already exist.</errorMessage>
+</ValidationRule>

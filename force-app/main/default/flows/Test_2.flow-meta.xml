@@ -37,7 +37,7 @@
     </decisions>
     <environments>Default</environments>
     <interviewLabel>Test 2 {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Test 2</label>
+    <label>test 2</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>

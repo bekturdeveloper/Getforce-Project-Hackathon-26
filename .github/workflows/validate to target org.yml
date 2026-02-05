@@ -1,4 +1,5 @@
 name: Validate Salesforce Deploy (PR)
+run-name: ${{ github.base_ref == 'stage' && 'Validating to UAT' || 'Validating to PROD' }}
 
 on:
   pull_request:
@@ -11,13 +12,11 @@ on:
 
 jobs:
   validate:
+    if: ${{ !(github.base_ref == 'main' && github.head_ref == 'stage') }}
     runs-on: ubuntu-latest
-
-    # Target org is the PR base branch:
-    # PR -> main  => validate against PROD env "sffnoobs"
-    # PR -> stage => validate against UAT env "stage"
     environment:
       name: ${{ github.base_ref == 'main' && 'sffnoobs' || 'stage' }}
+
 
     steps:
       - name: Checkout PR head

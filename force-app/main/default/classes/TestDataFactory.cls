@@ -1,7 +1,7 @@
 @isTest
 public class TestDataFactory {
 	public static Account createAccount(Boolean doInsert) {
-		createAccount('testAccount', doInsert);
+		return createAccount('testAccount', doInsert);
 	}
 	
 	public static Account createAccount(String name, Boolean doInsert) {

@@ -65,10 +65,6 @@
         <type>CustomApplication</type>
     </appMenuItems>
     <appMenuItems>
-        <name>standard__LightningInstrumentation</name>
-        <type>CustomApplication</type>
-    </appMenuItems>
-    <appMenuItems>
         <name>sfcma__Checkout_Management_App</name>
         <type>CustomApplication</type>
     </appMenuItems>
@@ -115,5 +111,13 @@
     <appMenuItems>
         <name>HUB_cvajzt4vhjhwgfllnxmc</name>
         <type>ConnectedApp</type>
+    </appMenuItems>
+    <appMenuItems>
+        <name>Github_Actions</name>
+        <type>ConnectedApp</type>
+    </appMenuItems>
+    <appMenuItems>
+        <name>RenterOps</name>
+        <type>CustomApplication</type>
     </appMenuItems>
 </AppMenu>

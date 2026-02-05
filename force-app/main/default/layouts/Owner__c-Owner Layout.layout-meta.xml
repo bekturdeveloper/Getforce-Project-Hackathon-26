@@ -5,41 +5,46 @@
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
         <label>Information</label>
-        <style>TwoColumnsTopToBottom</style>
         <layoutColumns>
             <layoutItems>
                 <behavior>Required</behavior>
                 <field>Name</field>
-                <showLabel>true</showLabel>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>OwnerKey__c</field>
-                <showLabel>true</showLabel>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>OwnerType__c</field>
-                <showLabel>true</showLabel>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Status__c</field>
-                <showLabel>true</showLabel>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Email__c</field>
-                <showLabel>true</showLabel>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Phone__c</field>
-                <showLabel>true</showLabel>
             </layoutItems>
         </layoutColumns>
+        <style>TwoColumnsTopToBottom</style>
     </layoutSections>
+    <layoutSections>
+        <customLabel>false</customLabel>
+        <detailHeading>false</detailHeading>
+        <editHeading>false</editHeading>
+        <layoutColumns/>
+        <style>CustomLinks</style>
+    </layoutSections>
+    <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>true</showHighlightsPanel>
+    <showInteractionLogPanel>false</showInteractionLogPanel>
+    <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
+    <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
 </Layout>

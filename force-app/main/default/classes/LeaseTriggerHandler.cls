@@ -21,7 +21,7 @@ public override void afterInsert() {
 }
 
 public override void beforeUpdate() {
-    LeaseService.blockAssetChangeWithInvoices(this.oldLeaseMap, this.newLeaseMap);
+
 }
 
 public override void afterUpdate() {
@@ -29,7 +29,7 @@ public override void afterUpdate() {
 }
 
 public override void beforeDelete() {
-    LeaseService.RenterOpsLeaseDeleteBlockedFinancials(oldLeaseList);
+
 }
 
 public override void afterDelete() {

@@ -17,7 +17,7 @@ public override void beforeInsert() {
 }
 
 public override void afterInsert() {
-    InvoiceService.handleInvoicePdfGeneration(null, newInvoiceMap);
+
 }
 
 public override void beforeUpdate() {
@@ -25,7 +25,7 @@ public override void beforeUpdate() {
 }
 
 public override void afterUpdate() {
-    InvoiceService.handleInvoicePdfGeneration(oldInvoiceMap, newInvoiceMap);
+
 }
 
 public override void beforeDelete() {

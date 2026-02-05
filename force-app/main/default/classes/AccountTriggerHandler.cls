@@ -13,7 +13,7 @@ this.oldAccountMap = (Map<Id, Account>) Trigger.oldMap;
 }
 
 public override void beforeInsert() {
-
+ //start
 }
 
 public override void afterInsert() {

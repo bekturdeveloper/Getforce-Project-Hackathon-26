@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>RenterOps_Invoice_StatusChangeBlocked_Paid</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Block reopening of paid invoices</shortDescription>
+        <value>Cannot change this Invoice status because it is already paid.</value>
+    </labels>
+</CustomLabels>

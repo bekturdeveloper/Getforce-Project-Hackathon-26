@@ -8,7 +8,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <customErrorMessages>
-            <errorMessage>This asset already has an active lease</errorMessage>
+            <errorMessage>This asset already has  active lease</errorMessage>
             <isFieldError>false</isFieldError>
         </customErrorMessages>
     </customErrors>

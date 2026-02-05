@@ -43,4 +43,11 @@
         <shortDescription>RenterOps_Lease_AssetChangeBlocked_Invoices</shortDescription>
         <value>Cannot change the rental asset because invoices already exist for this lease.</value>
     </labels>
+        <labels>
+        <fullName>RenterOps_Invoice_StatusChangeBlocked_Paid</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Block reopening of paid invoices</shortDescription>
+        <value>Cannot change this Invoice status because it is already paid.</value>
+    </labels>
 </CustomLabels>

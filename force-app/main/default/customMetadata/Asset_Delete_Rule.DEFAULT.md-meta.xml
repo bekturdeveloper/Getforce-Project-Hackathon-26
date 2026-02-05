@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>DEFAULT</label>
+    <protected>false</protected>
+    <values>
+        <field>BlockIfActiveLeaseExists_c__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>BlockIfAnyInvoiceExists_c__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>BlockIfAnyLeaseExists_c__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>BlockIfAnyMaintenanceExists_c__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>ErrorMessage__c</field>
+        <value xsi:type="xsd:string">Deletion blocked: Please ensure all related Leases, Invoices, and Maintenance records are handled before attempting to delete this asset.</value>
+    </values>
+</CustomMetadata>

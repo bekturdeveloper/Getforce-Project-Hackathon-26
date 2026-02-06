@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>PaymentDateTime__c</fullName>
-    <label>Payment Date/Time</label>
-    <required>true</required>
+    <fullName>FxLastUpdatedAt__c</fullName>
+    <label>Fx Last Updated At</label>
+    <required>false</required>
     <trackTrending>false</trackTrending>
     <type>DateTime</type>
 </CustomField>

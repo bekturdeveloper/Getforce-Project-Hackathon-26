@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>PaymentDateTime__c</fullName>
-    <label>Payment Date/Time</label>
-    <required>true</required>
+    <fullName>FxError__c</fullName>
+    <label>Fx Error</label>
+    <length>32768</length>
     <trackTrending>false</trackTrending>
-    <type>DateTime</type>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
 </CustomField>

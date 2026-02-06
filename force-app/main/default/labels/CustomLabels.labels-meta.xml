@@ -52,9 +52,10 @@
     </labels>
     <labels>
         <fullName>RenterOps_Tenant_DeleteBlocked_Leases</fullName>
+        <categories>Tenant delete blocked – existing leases</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>reopening of paid invoices</shortDescription>
-        <value>Cannot change this Invoice status because it is already paid.</value>
+        <shortDescription>RenterOps_Tenant_DeleteBlocked_Leases</shortDescription>
+        <value>This tenant cannot be deleted because it has one or more related leases.</value>
     </labels>
 </CustomLabels>

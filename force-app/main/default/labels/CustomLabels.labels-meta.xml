@@ -43,4 +43,12 @@
         <shortDescription>RenterOps_Lease_AssetChangeBlocked_Invoices</shortDescription>
         <value>Cannot change the rental asset because invoices already exist for this lease.</value>
     </labels>
+    <labels>
+        <fullName>RenterOps_Tenant_DeleteBlocked_Leases</fullName>
+        <categories>Tenant delete blocked – existing leases</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RenterOps_Tenant_DeleteBlocked_Leases</shortDescription>
+        <value>This tenant cannot be deleted because it has one or more related leases.</value>
+    </labels>
 </CustomLabels>

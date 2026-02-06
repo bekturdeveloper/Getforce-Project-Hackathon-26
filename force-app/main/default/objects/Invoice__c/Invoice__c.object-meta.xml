@@ -154,12 +154,6 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ControlledByParent</externalSharingModel>
     <label>Invoice</label>
-      <pluralLabel>Invoices</pluralLabel>
-    <nameField>
-        <label>Invoice Name</label>
-        <type>Text</type>
-    </nameField>
-    <deploymentStatus>Deployed</deploymentStatus>
     <nameField>
         <label>Invoice Name</label>
         <type>Text</type>

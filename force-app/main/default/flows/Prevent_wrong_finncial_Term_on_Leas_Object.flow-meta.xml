@@ -85,14 +85,7 @@
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Depo_required</name>
-            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
-            <conditions>
-                <leftValueReference>Get_Lease_Finance_Policy.RequireDeposit__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
+            <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record__Prior.DepositAmount__c</leftValueReference>
                 <operator>IsBlank</operator>

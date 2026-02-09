@@ -6,58 +6,61 @@ public with sharing class LeaseService {
 * @param oldMap old records
 * @param newMap new records
 */
-// public static void demonstrativeMethod(Map<Id, Lease__c> oldMap, Map<Id, Lease__c> newMap) {
+public static void enforceOnlyOneActivePerAsset(Map<Id, Lease__c> oldMap, list<Lease__c> newList) {
 // your logic is here.
-//}
 
-public static void RenterOpsLeaseDeleteBlockedFinancials(List<Lease__c> oldLeases) {
-        
-        Set<Id> leasesWithInvoices = new Set<Id>();
-        
-        for (Invoice__c inv : [SELECT Lease__c FROM Invoice__c WHERE Lease__c IN :oldLeases]) {
-            leasesWithInvoices.add(inv.Lease__c);
-        }
+        if (newList == null || newList.isEmpty()) return;
 
-        
-        for (Lease__c lease : oldLeases) {
-            if (leasesWithInvoices.contains(lease.Id)) {
-                lease.addError(System.Label.RenterOps_Lease_DeleteBlocked_Financials);
-            }
-        }
-    } 
+        Set<Id> assetIds = new Set<Id>();
+        Set<Id> triggerLeaseIds = new Set<Id>();
 
-    public static void blockAssetChangeWithInvoices(Map<Id, Lease__c> oldMap, Map<Id, Lease__c> newMap) {
+        // 1️⃣ Collect assets for leases being activated
+        for (Lease__c lease : newList) {
+            triggerLeaseIds.add(lease.Id);
 
-        Set<Id> leaseIdsToCheck = new Set<Id>();
+            Boolean isBecomingActive =
+                lease.Status__c == 'Active' &&
+                lease.RentalAsset__c != null &&
+                (
+                    oldMap == null ||
+                    !oldMap.containsKey(lease.Id) ||
+                    oldMap.get(lease.Id).Status__c != 'Active'
+                );
 
-        // 1. Collect IDs of leases where RentalAsset has changed
-        for (Id leaseId : newMap.keySet()) {
-            Lease__c newLease = newMap.get(leaseId);
-            Lease__c oldLease = oldMap.get(leaseId);
-            if (newLease.RentalAsset__c != oldLease.RentalAsset__c) {
-                leaseIdsToCheck.add(leaseId);
+            if (isBecomingActive) {
+                assetIds.add(lease.RentalAsset__c);
             }
         }
 
-        if (leaseIdsToCheck.isEmpty()) return;
+        if (assetIds.isEmpty()) return;
 
-        // 2. Check if there are related invoices with Status = 'Paid'
-        Set<Id> leasesWithPaidInvoices = new Set<Id>();
-        for (Invoice__c inv : [
-            SELECT Lease__c
-            FROM Invoice__c
-            WHERE Lease__c IN :leaseIdsToCheck
-            AND Status__c = 'Paid'
+        // 2️⃣ Find existing active leases
+        Map<Id, Id> assetToActiveLease = new Map<Id, Id>();
+
+        for (Lease__c existing : [
+            SELECT Id, RentalAsset__c
+            FROM Lease__c
+            WHERE Status__c = 'Active'
+            AND RentalAsset__c IN :assetIds
         ]) {
-            leasesWithPaidInvoices.add(inv.Lease__c);
+            assetToActiveLease.put(
+                existing.RentalAsset__c,
+                existing.Id
+            );
         }
 
-        // 3. Block the RentalAsset change for leases that have Paid invoices
-        for (Id leaseId : leaseIdsToCheck) {
-            if (leasesWithPaidInvoices.contains(leaseId)) {
-                Lease__c lease = newMap.get(leaseId);
-                lease.RentalAsset__c.addError(Label.RenterOps_Lease_AssetChangeBlocked_Invoices);
+        // 3️⃣ Block duplicates
+        for (Lease__c lease : newList) {
+            if (
+                lease.Status__c == 'Active' &&
+                lease.RentalAsset__c != null &&
+                assetToActiveLease.containsKey(lease.RentalAsset__c) &&
+                assetToActiveLease.get(lease.RentalAsset__c) != lease.Id
+            ) {
+                lease.addError(
+                    System.Label.RenterOps_Lease_OnlyOneActivePerAsset
+                );
             }
         }
-    }
+}
 }

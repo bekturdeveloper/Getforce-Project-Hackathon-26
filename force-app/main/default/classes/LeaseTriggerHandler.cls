@@ -1,43 +1,18 @@
 public class LeaseTriggerHandler extends TriggerHandler {
 
-private List<Lease__c> newLeaseList;
-private List<Lease__c> oldLeaseList;
-private Map<Id, Lease__c> newLeaseMap;
-private Map<Id, Lease__c> oldLeaseMap;
+    private List<Lease__c> newLeaseList;
+    private Map<Id, Lease__c> oldLeaseMap;
 
-public LeaseTriggerHandler() {
-this.newLeaseList = (List<Lease__c>) Trigger.new;
-this.oldLeaseList = (List<Lease__c>) Trigger.old;
-this.newLeaseMap = (Map<Id, Lease__c>) Trigger.newMap;
-this.oldLeaseMap = (Map<Id, Lease__c>) Trigger.oldMap;
-}
+    public LeaseTriggerHandler() {
+        this.newLeaseList = (List<Lease__c>) Trigger.new;
+        this.oldLeaseMap  = (Map<Id, Lease__c>) Trigger.oldMap;
+    }
 
-public override void beforeInsert() {
+    public override void beforeInsert() {
+        LeaseService.enforceOnlyOneActivePerAsset(null, newLeaseList);
+    }
 
-}
-
-public override void afterInsert() {
-
-}
-
-public override void beforeUpdate() {
-    LeaseService.blockAssetChangeWithInvoices(this.oldLeaseMap, this.newLeaseMap);
-}
-
-public override void afterUpdate() {
-
-}
-
-public override void beforeDelete() {
-    LeaseService.RenterOpsLeaseDeleteBlockedFinancials(oldLeaseList);
-}
-
-public override void afterDelete() {
-
-}
-
-public override void afterUndelete() {
-
-}
-
+    public override void beforeUpdate() {
+        LeaseService.enforceOnlyOneActivePerAsset(oldLeaseMap, newLeaseList);
+    }
 }

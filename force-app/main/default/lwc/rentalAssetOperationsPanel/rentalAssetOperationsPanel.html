@@ -1,0 +1,116 @@
+<template>
+
+<lightning-card icon-name="standard:asset_object">
+
+    <div class="main-title slds-m-around_medium">
+    Operations Overview
+    </div>
+
+    <!-- ================= ASSET INFO ================= -->
+    <div class="slds-box slds-m-around_small">
+
+        <div class="section-header slds-media slds-media_center">
+            <lightning-icon icon-name="standard:asset_object"
+                            size="small"
+                            class="slds-m-right_small">
+            </lightning-icon>
+                <span>Asset Information</span>
+        </div>
+
+        <template if:true={asset}>
+            <div class="slds-grid slds-wrap slds-gutters_small">
+
+                <div class="slds-col slds-size_1-of-2 field-text">Unit Label: {asset.UnitLabel__c}</div>
+                <div class="slds-col slds-size_1-of-2 field-text">Availability: {asset.AvailabilityStatus__c}</div>
+
+                <div class="slds-col slds-size_1-of-2 field-text">Type: {asset.AssetType__c}</div>
+                <div class="slds-col slds-size_1-of-2 field-text">City: {asset.City__c}</div>
+
+                <div class="slds-col slds-size_1-of-2 field-text">Bedrooms: {asset.Bedrooms__c}</div>
+                <div class="slds-col slds-size_1-of-2 field-text">Street: {asset.Street__c}</div>
+
+                <div class="slds-col slds-size_1-of-2 field-text">Size: {asset.SizeSqm__c}</div>
+                <div class="slds-col slds-size_1-of-2 field-text">Market Rent: {asset.MarketRent__c}</div>
+
+            </div>
+        </template>
+
+    </div>
+
+    <!-- ================= CURRENT LEASE ================= -->
+    <div class="slds-box slds-m-around_small">
+
+        <div class="section-header slds-media slds-media_center">
+            <lightning-icon icon-name="standard:contract"
+                            size="small"
+                            class="slds-m-right_small">
+            </lightning-icon>
+                <span>Current Lease</span>
+        </div>
+
+        <template if:true={lease}>
+            <div class="slds-grid slds-wrap slds-gutters_small">
+
+                <div class="slds-col slds-size_1-of-2 field-text">
+                    Tenant: {lease.Tenant__r.Name}
+                </div>
+
+                <div class="slds-col slds-size_1-of-2 field-text">
+                    Monthly Rent: {lease.MonthlyRent__c}
+                </div>
+
+                <div class="slds-col slds-size_1-of-2 field-text">
+                    Start Date: {lease.StartDate__c}
+                </div>
+
+                <div class="slds-col slds-size_1-of-2 field-text">
+                    End Date: {lease.EndDate__c}
+                </div>
+
+                <div class="slds-col slds-size_1-of-2 field-text">
+                    Status: {lease.Status__c}
+                </div>
+
+            </div>
+        </template>
+
+        <template if:false={lease}>
+            <div class="slds-text-color_weak">
+                No active lease found
+            </div>
+        </template>
+
+    </div>
+
+    <!-- ================= MAINTENANCE ================= -->
+    <div class="slds-box slds-m-around_small">
+
+        <div class="section-header slds-media slds-media_center">
+            <lightning-icon icon-name="standard:work_order"
+                            size="small"
+                            class="slds-m-right_small">
+            </lightning-icon>
+                <span>Open Maintenance Requests</span>
+        </div>
+
+        <lightning-datatable class="datatable-wrapper"
+            key-field="Id"
+            data={maintenance}
+            columns={columns}
+            hide-checkbox-column>
+        </lightning-datatable>
+
+    </div>
+
+    <!-- ================= BUTTON ================= -->
+    <div class="slds-align_absolute-center slds-m-around_medium">
+        <lightning-button
+            label="New Maintenance Request"
+            variant="brand"
+            onclick={handleNewMaintenance}>
+        </lightning-button>
+    </div>
+
+</lightning-card>
+
+</template>

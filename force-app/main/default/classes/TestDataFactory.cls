@@ -48,9 +48,9 @@ public class TestDataFactory {
             LocaleSidKey='en_US', TimeZoneSidKey='America/Los_Angeles'
         );
         return u;
-    }
+	}
 
-	public static Owner__c createOwner(Boolean doInsert) {
+public static Owner__c createOwner(Boolean doInsert) {
         Owner__c owner = new Owner__c(
             Name = 'Test Owner',
             Email__c = 'owner@test.com',
@@ -60,18 +60,102 @@ public class TestDataFactory {
         return owner;
     }
 
-		public static RentalAsset__c createAsset(Id ownerID, Boolean DoInsert){
-		RentalAsset__c asset = new RentalAsset__c(
-			Name = 'Test Asset',
-			Owner__c = ownerID,
-			City__c = 'Osnabruck',
-			Street__c = 'Wersener Str 46'
-		);
-		if(DoInsert) insert asset;
-		return asset;
-	}
+public static Tenant__c createTenant(Boolean doInsert) {
+        Tenant__c tenant = new Tenant__c(
+            Name = 'Test Tenant',
+            FirstName__c = 'Test',
+            LastName__c = 'Tenant',
+            PreferredLanguage__c = 'EN',
+            Phone__c = '015208832076'
+        );
+        if(doInsert) insert tenant;
+        return tenant;
+}
 
-    public static List<MaintenanceRequest__c> createRequests(Integer count, String status, Id assetId) {
+public static RentalAsset__c createAsset(Id ownerId, Boolean doInsert) {
+        RentalAsset__c asset = new RentalAsset__c(
+            Name = 'Test Asset',
+            Owner__c = ownerId,
+            City__c = 'Osnabruck',
+            Street__c = 'Wersener Straße 46'
+        );
+        if(doInsert) insert asset;
+        return asset;
+}
+
+public static Lease__c createLease(Boolean doInsert) {
+        Owner__c owner = createOwner(true);
+        Tenant__c tenant = createTenant(true);
+        RentalAsset__c asset = createAsset(owner.Id, true);
+
+        Lease__c lease = new Lease__c(
+            Name = 'Test Lease',
+            Tenant__c = tenant.Id,
+            RentalAsset__c = asset.Id,
+            StartDate__c = Date.today(),
+            EndDate__c = Date.today().addMonths(12),
+			DueDayOfMonth__c = 1,    
+    		MonthlyRent__c = 1000 
+        );
+        if(doInsert) insert lease;
+        return lease;
+}
+
+public static Invoice__c createInvoice(Boolean doInsert) {
+        Lease__c lease = createLease(true);
+
+        Invoice__c inv = new Invoice__c(
+            Name = 'Test Invoice',
+            Amount__c = 1000,
+            DueDate__c = Date.today().addDays(30),
+            Lease__c = lease.Id,
+            PeriodMonth__c = Date.today()
+        );
+        if(doInsert) insert inv;
+        return inv;
+}
+
+// Payment
+public static Payment__c createPayment(
+        Decimal amount,
+        String currencyCode,
+        Boolean doInsert
+    ) {
+        Invoice__c inv = createInvoice(true); 
+
+        Payment__c p = new Payment__c(
+            Name = 'Test Payment',
+            Amount__c = amount,
+            CurrencyCode__c = currencyCode,
+            FxStatus__c = 'Pending',
+            PaymentDateTime__c = System.now(),
+            Invoice__c = inv.Id
+        );
+
+        if(doInsert) insert p;
+        return p;
+    }
+
+    public static List<Payment__c> createPayments(
+        List<Decimal> amounts,
+        List<String> currencyCodes
+    ) {
+        Invoice__c inv = createInvoice(true); 
+        List<Payment__c> listP = new List<Payment__c>();
+
+        for(Integer i=0; i<amounts.size(); i++) {
+            listP.add(new Payment__c(
+                Name = 'Payment ' + i,
+                Amount__c = amounts[i],
+                CurrencyCode__c = currencyCodes[i],
+                FxStatus__c = 'Pending',
+                PaymentDateTime__c = System.now(),
+                Invoice__c = inv.Id
+            ));
+        }
+        return listP;
+    }
+	public static List<MaintenanceRequest__c> createRequests(Integer count, String status, Id assetId) {
         List<MaintenanceRequest__c> reqs = new List<MaintenanceRequest__c>();
         for(Integer i=0; i<count; i++) {
             reqs.add(new MaintenanceRequest__c(

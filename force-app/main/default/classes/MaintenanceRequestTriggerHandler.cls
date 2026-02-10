@@ -21,11 +21,12 @@ public override void afterInsert() {
 }
 
 public override void beforeUpdate() {
-
+    
 }
 
 public override void afterUpdate() {
-
+    MaintenanceRequestService.AutoCreateMaintenanceCompletionPDFWhenRequestIsClosed(newMaintenanceRequestList, oldMaintenanceRequestMap);
+    
 }
 
 public override void beforeDelete() {

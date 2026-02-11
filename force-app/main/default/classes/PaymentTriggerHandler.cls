@@ -13,19 +13,21 @@ this.oldPaymentMap = (Map<Id, Payment__c>) Trigger.oldMap;
 }
 
 public override void beforeInsert() {
-
+// fast-path for the base currency to avoid DML in after
+PaymentService.processFastPathBefore(newPaymentList);
 }
 
 public override void afterInsert() {
-
+    PaymentService.processFxUpdates(null, newPaymentMap);
 }
 
 public override void beforeUpdate() {
-
+// fast-path for the base currency to avoid DML in after
+    PaymentService.processFastPathBefore(newPaymentList, oldPaymentMap);
 }
 
 public override void afterUpdate() {
-
+    PaymentService.processFxUpdates(oldPaymentMap, newPaymentMap);
 }
 
 public override void beforeDelete() {

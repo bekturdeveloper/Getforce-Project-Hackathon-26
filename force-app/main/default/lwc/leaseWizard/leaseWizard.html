@@ -1,0 +1,74 @@
+<template>
+    <lightning-progress-indicator
+        current-step={currentStepString}
+        type="path"
+        class="slds-m-bottom_medium">
+
+        <lightning-progress-step
+            label="Find Tenant"
+            value="1">
+        </lightning-progress-step>
+
+        <lightning-progress-step
+            label="Find Rental Asset"
+            value="2">
+        </lightning-progress-step>
+
+        <lightning-progress-step
+            label="Lease Details"
+            value="3">
+        </lightning-progress-step>
+
+        <lightning-progress-step
+            label="Review and Create"
+            value="4">
+        </lightning-progress-step>
+
+    </lightning-progress-indicator>
+
+    <template if:true={isStep1}>
+        <c-tenant-search ontenantselected={handleTenantSelected}></c-tenant-search>
+        <lightning-button label="Next" onclick={handleNext}></lightning-button>
+    </template>
+
+    <template if:true={isStep2}>
+        <c-rental-asset-search
+            onassetselected={handleAssetSelected}>
+        </c-rental-asset-search>
+        <lightning-button label="Back" onclick={handleBack}></lightning-button>
+        <lightning-button label="Next" onclick={handleNext}></lightning-button>
+    </template>
+
+    <template if:true={isStep3}>
+        <c-lease-details
+            asset-id={assetId}
+            onleasedetailsvalid={handleLeaseDetails}>
+        </c-lease-details>
+        <lightning-button label="Back" onclick={handleBack}></lightning-button>
+        <lightning-button label="Next" onclick={handleNext}></lightning-button>
+    </template>
+
+    <template if:true={isStep4}>
+        <lightning-card title="Review Lease Details">
+            <div class="slds-p-around_medium">
+                <p><strong>Tenant:</strong> {tenantName}</p>
+                <p><strong>Asset:</strong> {assetName}</p>
+                <p><strong>Start Date:</strong> {leaseData.startDate}</p>
+                <p><strong>End Date:</strong> {leaseData.endDate}</p>
+                <p><strong>Monthly Rent:</strong> {leaseData.monthlyRent}</p>
+                <p><strong>Due Day:</strong> {leaseData.dueDay}</p>
+
+                <template if:true={errorMessage}>
+                    <div class="slds-text-color_error slds-m-top_small">{errorMessage}</div>
+                </template>
+                
+                <lightning-button label="Back" onclick={handleBack}></lightning-button>
+                <lightning-button
+                    label="Create Lease"
+                    onclick={handleCreateLease}
+                    class="slds-m-top_medium">
+                </lightning-button>
+            </div>
+        </lightning-card>
+    </template>
+</template>

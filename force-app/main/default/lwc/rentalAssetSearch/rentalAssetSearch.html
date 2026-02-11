@@ -1,0 +1,52 @@
+<template>
+    <!-- Filters -->
+    <lightning-card title="Search Rental Assets">
+        <div class="slds-p-around_medium">
+
+            <lightning-input label="City" value={city} onchange={handleChange}></lightning-input>
+
+            <lightning-combobox
+                label="Availability Status"
+                value={availability}
+                options={availabilityOptions}
+                onchange={handleAvailabilityChange}>
+            </lightning-combobox>
+
+            <lightning-input type="number" label="Min Bedrooms" value={minBedrooms} onchange={handleChange}></lightning-input>
+            <lightning-input type="number" label="Max Bedrooms" value={maxBedrooms} onchange={handleChange}></lightning-input>
+
+            <lightning-input type="number" label="Maximum Rent" value={maxRent} onchange={handleChange}></lightning-input>
+
+            <lightning-button
+                label="Search"
+                onclick={search}
+                class="slds-m-top_medium">
+            </lightning-button>
+
+        </div>
+    </lightning-card>
+
+    <!-- Results -->
+    <template if:true={assets.length}>
+        <!-- <lightning-datatable
+            key-field="Id"
+            data={assets}
+            columns={columns}
+            onrowaction={handleRowAction}>
+        </lightning-datatable> -->
+        <lightning-datatable
+            key-field="Id"
+            data={assets}
+            columns={columns}
+            onrowselection={handleRowSelection}
+            max-row-selection="1">
+        </lightning-datatable>
+    </template>
+
+    <!-- Occupied warning -->
+    <template if:true={showWarning}>
+        <div class="slds-text-color_error slds-m-top_small">
+            ⚠ This asset is currently occupied, but you may continue.
+        </div>
+    </template>
+</template>

@@ -105,4 +105,5 @@ public class RO_FxFuture_Test {
         System.assertEquals('Failed', p.FxStatus__c, 'FxStatus should be Failed on callout error');
         System.assertNotEquals(null, p.FxError__c, 'FxError should be populated');
     }
+
 }

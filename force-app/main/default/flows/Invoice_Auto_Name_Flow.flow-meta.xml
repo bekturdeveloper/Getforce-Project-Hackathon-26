@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>Set_Invoice_Name</name>
+        <label>Set Invoice Name</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Name</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>InvoiceNameFormula</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <decisions>
+        <name>Check_Bypass</name>
+        <label>Check Bypass</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Set_Invoice_Name</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Bypass</defaultConnectorLabel>
+        <rules>
+            <name>Has_Bypass</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Permission.RenterOps_Flow_Bypass</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Has Bypass</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <formulas>
+        <name>InvoiceNameFormula</name>
+        <dataType>String</dataType>
+        <expression>&quot;INV-&quot; &amp; $Record.Lease__r.Name &amp; &quot;-&quot; &amp; TEXT($Record.PeriodMonth__c)</expression>
+    </formulas>
+    <interviewLabel>Invoice Auto Name Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Invoice Auto Name Flow</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Check_Bypass</targetReference>
+        </connector>
+        <object>Invoice__c</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

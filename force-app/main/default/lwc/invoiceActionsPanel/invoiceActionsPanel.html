@@ -1,0 +1,74 @@
+<template>
+    <lightning-card title="Invoice Actions Panel" icon-name="standard:invoice">
+
+        <!-- SUMMARY -->
+        <div class="panel">
+
+            <div class="summaryBox">
+                <h2 class="sectionTitle">Invoice Summary</h2>
+
+                <lightning-record-view-form
+                    record-id={recordId}
+                    object-api-name="Invoice__c">
+
+                    <div class="fieldRow">
+                        <span class="label">Status:</span>
+                        <lightning-output-field field-name="Status__c"></lightning-output-field>
+                    </div>
+
+                    <div class="fieldRow">
+                        <span class="label">Amount:</span>
+                        <lightning-output-field field-name="Amount__c"></lightning-output-field>
+                    </div>
+
+                    <div class="fieldRow">
+                        <span class="label">Outstanding Amount:</span>
+                        <lightning-output-field field-name="OutstandingAmount__c"></lightning-output-field>
+                    </div>
+
+                    <div class="fieldRow">
+                        <span class="label">Invoice Date:</span>
+                        <lightning-output-field field-name="InvoiceDate__c"></lightning-output-field>
+                    </div>
+
+                    <div class="fieldRow">
+                        <span class="label">Due Date:</span>
+                        <lightning-output-field field-name="DueDate__c"></lightning-output-field>
+                    </div>
+
+                </lightning-record-view-form>
+            </div>
+
+            <!-- BUTTONS -->
+            <div class="buttonRow">
+
+                <lightning-button
+                    label="Generate PDF"
+                    variant="brand"
+                    onclick={handleGeneratePdf}>
+                </lightning-button>
+
+                <lightning-button
+                    label="Mark as Sent"
+                    variant="brand"
+                    onclick={handleMarkSent}>
+                </lightning-button>
+
+                <lightning-button
+                    label="Mark as Paid"
+                    variant="brand"
+                    onclick={handleMarkPaid}>
+                </lightning-button>
+
+            </div>
+
+            <!-- PDF LINK -->
+            <template if:true={pdfUrl}>
+                <div class="pdfLink">
+                    <a href={pdfUrl} target="_blank">Open PDF</a>
+                </div>
+            </template>
+
+        </div>
+    </lightning-card>
+</template>

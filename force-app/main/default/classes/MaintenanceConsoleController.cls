@@ -2,7 +2,7 @@ public with sharing class MaintenanceConsoleController {
     
     @AuraEnabled(cacheable=true)
     public static Map<String, Object> getMaintenanceData(String status, String priority, String category, String searchKey) {
-        String query = 'SELECT Id, Name, MaintKey__c,  Status__c, Priority__c, Category__c, RequestedAt__c, RentalAsset__r.Name, Tenant__r.Name, VendorName__c, CostEstimate__c FROM MaintenanceRequest__c';
+        String query = 'SELECT Id, Name, MaintKey__c,  Status__c, Priority__c, Category__c, RequestedAt__c, RentalAsset__r.Name, RentalAsset__r.Id__c,  Tenant__r.Name, VendorName__c, CostEstimate__c FROM MaintenanceRequest__c';
         String countQuery = 'SELECT Status__c, COUNT(Id) total FROM MaintenanceRequest__c';
         
         List<String> filters = new List<String>();

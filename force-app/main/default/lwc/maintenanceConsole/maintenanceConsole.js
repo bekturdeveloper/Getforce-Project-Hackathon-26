@@ -35,7 +35,8 @@ export default class MaintenanceConsoleConsole extends NavigationMixin(Lightning
                 return {
                     ...req,
                     
-                    priorityClass: priorityClass, 
+                    priorityClass: priorityClass,
+                    assetExternalId: req.RentalAsset__r ? req.RentalAsset__r.Id__c : '', 
                     tenantName: req.Tenant__r ? req.Tenant__r.Name : '', 
                     assetName: req.RentalAsset__r ? req.RentalAsset__r.Name : '',
                     isNotNew: req.Status__c !== 'New',

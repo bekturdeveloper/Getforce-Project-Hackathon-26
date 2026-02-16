@@ -1,0 +1,99 @@
+<template>
+    <lightning-card>
+        <div class="slds-p-around_medium">
+            <div class="slds-grid slds-gutters slds-m-bottom_large">
+                <template for:each={kpiData} for:item="item">
+                    <div key={item.label} class="slds-col slds-size_1-of-3">
+                        <div class={item.class}>
+                            <div class="slds-text-heading_small">{item.label}</div>
+                            <div class="slds-text-heading_large">{item.value}</div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <div class="slds-grid slds-grid_align-spread slds-m-bottom_small slds-grid_vertical-align-end">
+                <div class="slds-col">
+                    <span class="slds-text-heading_medium">Filters</span>
+                </div>
+                <div class="slds-col">
+                    <lightning-button 
+                        label="New Maintenance Request" 
+                        variant="brand" 
+                        onclick={handleNewRequest}>
+                    </lightning-button>
+                </div>
+            </div>
+
+            <div class="slds-grid slds-gutters slds-m-bottom_medium slds-grid_vertical-align-end">
+                <div class="slds-col slds-size_2-of-12">
+                    <lightning-combobox label="Status" value={status} options={statusOptions} onchange={handleFilterChange} data-id="status"></lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_2-of-12">
+                    <lightning-combobox label="Priority" value={priority} options={priorityOptions} onchange={handleFilterChange} data-id="priority"></lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_2-of-12">
+                    <lightning-combobox label="Category" value={category} options={categoryOptions} onchange={handleFilterChange} data-id="category"></lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_4-of-12">
+                    <lightning-input 
+                        label="Search" 
+                        type="search" 
+                        class="search-input" 
+                        placeholder="Search Key, Vendor...">
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-no-flex">
+                    <lightning-button 
+                        label="Search" 
+                        variant="brand" 
+                        onclick={handleSearchClick}>
+                    </lightning-button>
+                </div>
+            </div>
+
+            <div class="slds-border_top">
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th>Maintenance Key</th>
+                            <th>Status</th>
+                            <th>Priority</th>
+                            <th>Category</th>
+                            <th>Requested At</th>
+                            <th>Rental Asset</th>
+                            <th>Tenant</th>
+                            <th>Vendor</th>
+                            <th>Cost</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={requests} for:item="req">
+                            <tr key={req.Id}>
+                                <td><a onclick={navigateToRecord} data-id={req.Id}>{req.MaintKey__c}</a></td>
+                                <td><span class="slds-badge">{req.Status__c}</span></td>
+                                <td>
+                                    <span class={req.priorityClass}>{req.Priority__c}</span>
+                                </td>
+                                <td>{req.Category__c}</td>
+                                <td>{req.RequestedAt__c}</td>
+                                <td>{req.assetName}</td>
+                                <td>{req.tenantName}</td>
+                                <td>{req.VendorName__c}</td>
+                                <td>{req.CostEstimate__c}</td>
+                                <td>
+                                    <lightning-button-group>
+                                        <lightning-button label="Start Work" variant="brand-outline" onclick={handleStartWork} data-id={req.Id} disabled={req.isNotNew}></lightning-button>
+                                        <lightning-button label="Close" variant="destructive-text" onclick={handleCloseRequest} data-id={req.Id} disabled={req.isClosed}></lightning-button>
+                                        <lightning-button-icon icon-name="utility:preview" onclick={navigateToRecord} data-id={req.Id} alternative-text="View"></lightning-button-icon>
+                                    </lightning-button-group>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </lightning-card>
+</template>

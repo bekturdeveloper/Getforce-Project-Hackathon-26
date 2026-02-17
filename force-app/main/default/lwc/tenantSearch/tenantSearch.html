@@ -1,30 +1,118 @@
 <template>
-    <lightning-card title="Step 1 — Tenant Search">
-        <div class="slds-p-around_medium">
+  <div class="page">
+    <div class="pageTitle">Tenant 360 Dashboard</div>
 
-            <lightning-input
-                label="Search by Name, Email, or Phone"
-                value={searchKey}
-                onchange={handleChange}>
-            </lightning-input>
+    <!-- Main Card -->
+    <section class="mainCard">
 
-            <lightning-button
-                label="Search"
-                onclick={handleSearch}
-                class="slds-m-top_small">
-            </lightning-button>
-
-            <template if:true={tenants}>
-                <lightning-datatable
-                    key-field="Id"
-                    data={tenants}
-                    columns={columns}
-                    onrowselection={handleRowSelection}
-                    max-row-selection="1">
-                </lightning-datatable>
-            </template>
-            
-
+      <!-- Blue top bar like in the mock -->
+      <div class="topBar slds-grid slds-align_absolute-center slds-p-horizontal_medium">
+        <div class="slds-grid slds-grid_vertical-align-center slds-grow">
+          <span class="appIcon" aria-hidden="true"></span>
+          <span class="topBarTitle">Tenant 360</span>
         </div>
-    </lightning-card>
+
+
+      </div>
+
+      <div class="mainInner">
+
+        <!-- Search block -->
+        <div class="card">
+          <div class="cardInner">
+
+            <!-- Combined search bar -->
+            <div class="searchRow">
+              <div class="searchInputWrap">
+                <lightning-input
+                  type="search"
+                  label="Search Tenant"
+                  placeholder="Search by name or email"
+                  value={searchKey}
+                  onchange={handleInputChange}
+                  variant="label-hidden"
+                  class="searchInput">
+                </lightning-input>
+              </div>
+
+              <lightning-button-icon
+                icon-name="utility:search"
+                variant="brand"
+                alternative-text="Search"
+                onclick={handleSearch}
+                disabled={isSearchDisabled}
+                class="searchBtn">
+              </lightning-button-icon>
+            </div>
+
+            <template if:true={showMinCharsHint}>
+              <div class="hintText">Enter at least 2 characters to search</div>
+            </template>
+
+          </div>
+        </div>
+
+        <!-- Results block -->
+        <div class="card resultsCard">
+          <div class="cardHeader">Tenant Results</div>
+
+          <div class="cardInner">
+
+            <template if:true={isLoading}>
+              <div class="spinnerWrap">
+                <lightning-spinner alternative-text="Searching" size="small"></lightning-spinner>
+              </div>
+            </template>
+
+            <template if:true={hasResults}>
+              <lightning-datatable
+                key-field="Id"
+                data={tenants}
+                columns={columns}
+                onrowselection={handleRowSelection}
+                max-row-selection="1">
+              </lightning-datatable>
+            </template>
+
+            <template if:true={showNoResults}>
+              <div class="emptyText">No tenants found.</div>
+            </template>
+
+            <!-- Button like in mock (bottom-right) -->
+            <div class="bottomActions">
+              <lightning-button
+                label="Open Tenant Record"
+                variant="brand"
+                onclick={openTenantRecord}
+                disabled={isOpenDisabled}>
+              </lightning-button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Details block (optional: keep it as a simple card) -->
+        <div class="card">
+          <div class="cardHeader">Tenant Details</div>
+
+          <div class="cardInner">
+            <template if:true={selectedTenant}>
+              <div class="details">
+                <p><b>First Name:</b> {selectedTenant.firstName}</p>
+                <p><b>Last Name:</b> {selectedTenant.lastName}</p>
+                <p><b>Email:</b> {selectedTenant.email}</p>
+                <p><b>Phone:</b> {selectedTenant.phone}</p>
+                <p><b>Status:</b> {selectedTenant.status}</p>
+              </div>
+            </template>
+
+            <template if:false={selectedTenant}>
+              <div class="emptyText">Select a tenant from results to view details.</div>
+            </template>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
 </template>

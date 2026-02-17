@@ -7,7 +7,7 @@
         <shortDescription>ROPS_PaymentAmountExceedsOutstanding_Error</shortDescription>
         <value>Payment amount cannot exceed the invoice outstanding amount.</value>
     </labels>
-        <labels>
+    <labels>
         <fullName>RenterOps_LeaseWizard_AssetConflict</fullName>
         <language>en_US</language>
         <protected>false</protected>

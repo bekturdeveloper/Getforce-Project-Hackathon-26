@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
     <labels>
+        <fullName>RenterOps_LeaseWizard_AssetConflict</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RenterOps LeaseWizard AssetConflict</shortDescription>
+        <value>&quot;This asset already has an active lease.&quot;</value>
+    </labels>
+    <labels>
         <fullName>RenterOps_MaintenanceRequest_DeleteBlocked_Status</fullName>
         <categories>General (or create a new category if needed, but General is fine)</categories>
         <language>en_US</language>

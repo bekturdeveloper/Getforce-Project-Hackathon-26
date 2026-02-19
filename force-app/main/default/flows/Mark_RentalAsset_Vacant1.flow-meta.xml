@@ -66,7 +66,7 @@
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>Id</field>
+            <field>ID__c</field>
             <operator>EqualTo</operator>
             <value>
                 <elementReference>recordId</elementReference>
@@ -86,10 +86,10 @@
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>Id</field>
+            <field>AvailabilityStatus__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>recordId</elementReference>
+                <stringValue>Vacant</stringValue>
             </value>
         </filters>
         <inputAssignments>
@@ -108,6 +108,9 @@
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Update_Asset_to_Vacant</targetReference>
+        </connector>
         <fields>
             <name>Vcant_text</name>
             <fieldText>&lt;p&gt;This asset is already marked as Vacant.&lt;/p&gt;&lt;p&gt;No changes were made.&lt;/p&gt;</fieldText>

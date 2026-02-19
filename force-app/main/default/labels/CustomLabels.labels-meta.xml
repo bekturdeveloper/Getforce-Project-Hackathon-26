@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
     <labels>
+        <fullName>ROPS_PaymentAmountExceedsOutstanding_Error</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ROPS_PaymentAmountExceedsOutstanding_Error</shortDescription>
+        <value>Payment amount cannot exceed the invoice outstanding amount.</value>
+    </labels>
+    <labels>
         <fullName>RenterOps_LeaseWizard_AssetConflict</fullName>
         <language>en_US</language>
         <protected>false</protected>

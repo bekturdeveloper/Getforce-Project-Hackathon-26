@@ -6,6 +6,6 @@
         <label>Developer Name</label>
         <type>Text</type>
     </nameField>
-    <deploymentStatus>Deployed</deploymentStatus>
     <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
 </CustomObject>

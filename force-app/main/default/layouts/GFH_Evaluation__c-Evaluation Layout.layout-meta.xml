@@ -9,7 +9,7 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>GFH_Evaluation__c.Name</field>
+                <field>Name</field>
             </layoutItems>
         </layoutColumns>
     </layoutSections>

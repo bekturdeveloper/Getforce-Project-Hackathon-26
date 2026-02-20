@@ -1,1 +1,3 @@
-<aura:documentation>gfhQuickLinksAura</aura:documentation>
+<aura:documentation>
+    <aura:description>gfhQuickLinksAura (demo)</aura:description>
+</aura:documentation>

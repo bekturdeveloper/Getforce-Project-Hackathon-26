@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Mentor__c</fullName>
+    <label>Mentor</label>
+    <type>Lookup</type>
+    <referenceTo>GFH_Mentor__c</referenceTo>
+    <relationshipName>Mentor</relationshipName>
+    <relationshipLabel>Mentor</relationshipLabel>
+</CustomField>

@@ -1,0 +1,25 @@
+.section-header {
+    background-color: #f3f3f3;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    font-size: 15px;
+    color: #000;
+} 
+
+.field-text {
+    font-size: 14px;
+    color: #000;
+    font-weight: 500;
+}
+
+.main-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #000;
+}
+
+.datatable-wrapper {
+    font-size: 14px;
+}

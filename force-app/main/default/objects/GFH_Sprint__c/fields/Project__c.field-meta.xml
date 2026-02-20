@@ -4,6 +4,6 @@
     <label>Project</label>
     <type>Lookup</type>
     <referenceTo>GFH_Project__c</referenceTo>
-    <relationshipName>Sprints</relationshipName>
-    <relationshipLabel>Sprints</relationshipLabel>
+    <relationshipName>Project</relationshipName>
+    <relationshipLabel>Project</relationshipLabel>
 </CustomField>

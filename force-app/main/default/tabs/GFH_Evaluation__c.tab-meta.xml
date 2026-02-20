@@ -2,6 +2,5 @@
 <CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
     <label>Evaluation</label>
     <motif>Custom18: Form</motif>
-    <sobjectName>GFH_Evaluation__c</sobjectName>
     <customObject>true</customObject>
 </CustomTab>

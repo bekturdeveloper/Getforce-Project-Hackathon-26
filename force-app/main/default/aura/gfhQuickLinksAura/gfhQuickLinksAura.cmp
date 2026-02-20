@@ -1,0 +1,5 @@
+<aura:component implements="flexipage:availableForAllPageTypes" access="global">
+    <lightning:card title="GFH Quick Links">
+        <div class="slds-p-around_small">Quick links placeholder (demo)</div>
+    </lightning:card>
+</aura:component>

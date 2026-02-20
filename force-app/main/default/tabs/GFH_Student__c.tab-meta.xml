@@ -2,6 +2,6 @@
 <CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
     <label>Student</label>
     <motif>Custom18: Form</motif>
-    <customObject>true</customObject>
     <sobjectName>GFH_Student__c</sobjectName>
+    <customObject>true</customObject>
 </CustomTab>

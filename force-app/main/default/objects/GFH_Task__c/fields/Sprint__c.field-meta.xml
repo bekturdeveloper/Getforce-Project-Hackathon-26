@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Sprint__c</fullName>
-    <label>Sprint</label>
-    <type>Lookup</type>
-    <referenceTo>GFH_Sprint__c</referenceTo>
-    <relationshipName>Sprint</relationshipName>
-    <relationshipLabel>Sprint</relationshipLabel>
-</CustomField>

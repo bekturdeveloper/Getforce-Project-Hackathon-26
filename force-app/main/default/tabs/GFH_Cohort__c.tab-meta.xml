@@ -2,6 +2,6 @@
 <CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
     <label>Cohort</label>
     <motif>Custom18: Form</motif>
-    <customObject>true</customObject>
     <sobjectName>GFH_Cohort__c</sobjectName>
+    <customObject>true</customObject>
 </CustomTab>

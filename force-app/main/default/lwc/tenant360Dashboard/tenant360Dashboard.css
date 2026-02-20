@@ -1,0 +1,135 @@
+/* ===================================== */
+/*      Tenant 360 Mock-like Styling     */
+/* ===================================== */
+
+.page {
+  background: #f4f6f9;
+  min-height: 100vh;
+  padding: 28px;
+}
+
+.pageTitle {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  color: #1f2d3d;
+  margin-bottom: 18px;
+}
+
+/* Main card */
+.mainCard {
+  max-width: 860px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  overflow: hidden;
+  border: 1px solid #d8dde6;
+}
+
+/* Top blue bar */
+.topBar {
+  height: 52px;
+  background: #1b6fbf;
+  color: #fff;
+}
+
+.topBarTitle {
+  font-weight: 700;
+  margin-left: 10px;
+}
+
+.appIcon {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.25);
+  display: inline-block;
+}
+
+.topBarActions lightning-button-icon {
+  margin-left: 6px;
+}
+
+/* Main content padding */
+.mainInner {
+  padding: 16px;
+  background: #f7f9fc;
+}
+
+/* Cards inside */
+.card {
+  background: #ffffff;
+  border: 1px solid #d8dde6;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+
+.cardHeader {
+  background: #eef3fb;
+  color: #2c3e50;
+  font-weight: 700;
+  padding: 10px 12px;
+  border-bottom: 1px solid #d8dde6;
+}
+
+.cardInner {
+  padding: 12px;
+}
+
+/* Search row like one combined control */
+.searchRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.searchInputWrap {
+  flex: 1;
+}
+
+/* Round search input (via SLDS CSS vars) */
+.searchInput {
+  --slds-c-input-radius-border: 6px;
+}
+
+/* Blue search icon button */
+.searchBtn {
+  --slds-c-button-brand-color-background: #1b6fbf;
+  --slds-c-button-brand-color-background-hover: #165ea3;
+  --slds-c-button-radius-border: 6px;
+}
+
+/* Hint text under search */
+.hintText {
+  margin-top: 8px;
+  color: #6b778c;
+  font-size: 12px;
+}
+
+/* Spinner centered */
+.spinnerWrap {
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
+}
+
+/* Empty state text */
+.emptyText {
+  color: #6b778c;
+  font-size: 13px;
+}
+
+/* Bottom-right actions like in mock */
+.bottomActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+/* Details spacing */
+.details p {
+  margin-bottom: 6px;
+}

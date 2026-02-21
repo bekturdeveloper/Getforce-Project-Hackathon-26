@@ -1,0 +1,11 @@
+<apex:page standardController="Invoice__c"
+           renderAs="pdf"
+           showHeader="false">
+
+    <h1>Invoice PDF</h1>
+
+    <p>Status: {!Invoice__c.Status__c}</p>
+    <p>Amount: {!Invoice__c.Amount__c}</p>
+    <p>Due Date: {!Invoice__c.DueDate__c}</p>
+
+</apex:page>

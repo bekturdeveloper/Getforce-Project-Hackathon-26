@@ -1,0 +1,25 @@
+.kpi-card {
+    padding: 1rem;
+    border-radius: 4px;
+    text-align: center;
+    color: white;
+}
+.blue { background: #4A90E2; }
+.orange { background: #F5A623; }
+.green { background: #7ED321; }
+
+
+.priority-badge {
+    padding: 4px 10px;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    display: inline-block;
+    text-align: center;
+    min-width: 95px;
+}
+
+.priority-emergency { background-color: #c0392b; } 
+.priority-high { background-color: #f39c12; }      
+.priority-medium { background-color: #e67e22; }   
+.priority-low { background-color: #27ae60; }

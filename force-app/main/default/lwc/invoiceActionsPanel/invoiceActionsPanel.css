@@ -1,0 +1,47 @@
+.panel {
+    padding: 16px;
+}
+
+.summaryBox {
+    border: 1px solid #d8dde6;
+    border-radius: 8px;
+    padding: 12px;
+    background: white;
+}
+
+.sectionTitle {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #f3f3f3;
+    padding-bottom: 6px;
+}
+
+.fieldRow {
+    display: flex;
+    margin: 6px 0;
+    font-size: 13px;
+}
+
+.label {
+    width: 160px;
+    font-weight: 600;
+    color: #444;
+}
+
+.buttonRow {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.pdfLink {
+    margin-top: 12px;
+    font-size: 13px;
+}
+
+.pdfLink a {
+    color: #1b5fcc;
+    font-weight: 600;
+    text-decoration: none;
+}

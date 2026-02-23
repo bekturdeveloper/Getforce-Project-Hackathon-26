@@ -12,7 +12,6 @@ on:
 
 jobs:
   validate:
-    if: ${{ !(github.base_ref == 'main' && github.head_ref == 'stage') }}
     runs-on: ubuntu-latest
     environment:
       name: ${{ github.base_ref == 'main' && 'sffnoobs' || 'stage' }}

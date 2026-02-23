@@ -25,6 +25,7 @@ public override void beforeUpdate() {
 }
 
 public override void afterUpdate() {
+    MaintenanceRequestService.AutoCreateMaintenanceCompletionPDFWhenRequestIsClosed(newMaintenanceRequestList, oldMaintenanceRequestMap);
 
 }
 

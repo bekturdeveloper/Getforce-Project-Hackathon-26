@@ -1,4 +1,5 @@
 name: Validate Salesforce Deploy (PR)
+run-name: ${{ github.base_ref == 'stage' && 'Validating to UAT' || 'Validating to PROD' }}
 
 on:
   pull_request:
@@ -12,12 +13,9 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
-
-    # Target org is the PR base branch:
-    # PR -> main  => validate against PROD env "sffnoobs"
-    # PR -> stage => validate against UAT env "stage"
     environment:
       name: ${{ github.base_ref == 'main' && 'sffnoobs' || 'stage' }}
+
 
     steps:
       - name: Checkout PR head
@@ -40,6 +38,7 @@ jobs:
 
       - name: Create delta package (PR base -> PR head)
         run: |
+          set -e
           mkdir -p changed-sources
           sf sgd source delta \
             --from "${{ github.event.pull_request.base.sha }}" \
@@ -51,6 +50,7 @@ jobs:
 
       - name: Authenticate (JWT)
         run: |
+          set -e
           echo "${{ secrets.JWT_SERVER_KEY }}" > server.key
           sf org login jwt \
             --username "${{ secrets.DEPLOYMENT_USER_NAME }}" \
@@ -60,24 +60,29 @@ jobs:
             --set-default
 
       - name: Validate only (no deploy)
+        shell: bash
         run: |
+          set -e
+
           if [ ! -d "changed-sources/force-app" ] || [ -z "$(ls -A changed-sources/force-app 2>/dev/null)" ]; then
             echo "[INFO] No metadata changes detected. Skipping validation."
             exit 0
           fi
 
-          if [ "${{ github.base_ref }}" = "main" ]; then
-            echo "[INFO] Base is main (PROD). Running RunLocalTests (Salesforce required for Apex in production)."
+          BASE_REF="${{ github.base_ref }}"
+          echo "[INFO] PR base branch: ${BASE_REF}"
+
+          if [ "${BASE_REF}" = "stage" ]; then
+            echo "[INFO] Stage/UAT: validate without running tests (NoTestRun)"
+            sf project deploy start \
+              --dry-run \
+              --source-dir changed-sources/force-app \
+              --test-level NoTestRun \
+              --wait 60
+          else
+            echo "[INFO] Main/Prod: validate with RunLocalTests"
             sf project deploy validate \
               --source-dir changed-sources/force-app \
               --test-level RunLocalTests \
-              --wait 60
-          else
-            echo "[INFO] Base is stage (NON-PROD). Validating with NoTestRun (no tests / no coverage gate)."
-            # NOTE: 'sf project deploy validate' rejects NoTestRun; use legacy source deploy for check-only validation.
-            sf force source deploy \
-              --check-only \
-              --source-dir changed-sources/force-app \
-              --test-level NoTestRun \
               --wait 60
           fi

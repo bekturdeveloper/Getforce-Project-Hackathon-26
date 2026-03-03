@@ -1,0 +1,30 @@
+<template>
+    <lightning-card title="Step 1 — Tenant Search">
+        <div class="slds-p-around_medium">
+
+            <lightning-input
+                label="Search by Name, Email, or Phone"
+                value={searchKey}
+                onchange={handleChange}>
+            </lightning-input>
+
+            <lightning-button
+                label="Search"
+                onclick={handleSearch}
+                class="slds-m-top_small">
+            </lightning-button>
+
+            <template if:true={tenants}>
+                <lightning-datatable
+                    key-field="Id"
+                    data={tenants}
+                    columns={columns}
+                    onrowselection={handleRowSelection}
+                    max-row-selection="1">
+                </lightning-datatable>
+            </template>
+            
+
+        </div>
+    </lightning-card>
+</template>

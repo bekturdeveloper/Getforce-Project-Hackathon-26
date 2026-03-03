@@ -69,6 +69,81 @@
         <protected>false</protected>
         <shortDescription>ROPS_RecordPayment_Title</shortDescription>
         <value>Record Payment</value>
+        <fullName>ROPS_GenerateInvoice_Error_DuplicateInvoice</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ROPS_GenerateInvoice_Error_DuplicateInvoice</shortDescription>
+        <value>An invoice already exists for this lease and month.</value>
+    </labels>
+    <labels>
+        <fullName>ROPS_GenerateInvoice_Error_InvoiceDateOutOfRange</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ROPS_GenerateInvoice_Error_InvoiceDateOutOfRange</shortDescription>
+        <value>Invoice Date must fall within the lease period.</value>
+    </labels>
+    <labels>
+        <fullName>ROPS_GenerateInvoice_Error_LeaseDatesMissing</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ROPS_GenerateInvoice_Error_LeaseDatesMissing</shortDescription>
+        <value>Lease Start Date and End Date are required.</value>
+    </labels>
+    <labels>
+        <fullName>ROPS_GenerateInvoice_Error_LeaseNotActive</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ROPS_GenerateInvoice_Error_LeaseNotActive</shortDescription>
+        <value>Only Active leases can generate invoices.</value>
+    </labels>
+    <labels>
+        <fullName>ROPS_GenerateInvoice_Error_RentMissing</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ROPS_GenerateInvoice_Error_RentMissing</shortDescription>
+        <value>Monthly Rent is missing. Enter an Amount to continue.</value>
+    </labels>
+    <labels>
+        <fullName>ROPS_GenerateInvoice_NoAccess</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ROPS_GenerateInvoice_NoAccess</shortDescription>
+        <value>You do not have access to run the Invoice Wizard.</value>
+    </labels>
+    <labels>
+        <fullName>ROPS_GenerateInvoice_OpenExisting</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ROPS_GenerateInvoice_OpenExisting</shortDescription>
+        <value>Open existing invoice</value>
+    </labels>
+    <labels>
+        <fullName>ROPS_GenerateInvoice_Success</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ROPS_GenerateInvoice_Success</shortDescription>
+        <value>Invoice created successfully.</value>
+    </labels>
+    <labels>
+        <fullName>ROPS_GenerateInvoice_Title</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ROPS_GenerateInvoice_Title</shortDescription>
+        <value>Generate Monthly Invoice</value>
+    </labels>
+    <labels>
+        <fullName>RenterOps_Lease_AssetChangeBlocked_Invoices</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RenterOps_Lease_AssetChangeBlocked_Invoices</shortDescription>
+        <value>Cannot change the rental asset because invoices already exist for this lease.</value>
+    </labels>
+     <labels>
+        <fullName>ROPS_PaymentAmountExceedsOutstanding_Error</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ROPS_PaymentAmountExceedsOutstanding_Error</shortDescription>
+        <value>Payment amount cannot exceed the invoice outstanding amount.</value>
     </labels>
     <labels>
         <fullName>RenterOps_Invoice_StatusChangeBlocked_Paid</fullName>

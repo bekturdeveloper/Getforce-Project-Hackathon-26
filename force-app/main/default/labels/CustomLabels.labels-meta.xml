@@ -1,87 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
     <labels>
-        <fullName>ROPS_GenerateInvoice_Error_DuplicateInvoice</fullName>
+        <fullName>ROPS_NBA_Overdue_ActionLabel</fullName>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>ROPS_GenerateInvoice_Error_DuplicateInvoice</shortDescription>
-        <value>An invoice already exists for this lease and month.</value>
+        <shortDescription>ROPS_NBA_Overdue_ActionLabel</shortDescription>
+        <value>Create Follow-Up Task</value>
     </labels>
     <labels>
-        <fullName>ROPS_GenerateInvoice_Error_InvoiceDateOutOfRange</fullName>
+        <fullName>ROPS_NBA_Overdue_Description</fullName>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>ROPS_GenerateInvoice_Error_InvoiceDateOutOfRange</shortDescription>
-        <value>Invoice Date must fall within the lease period.</value>
+        <shortDescription>ROPS_NBA_Overdue_Description</shortDescription>
+        <value>Create a follow-up task for this overdue invoice.</value>
     </labels>
     <labels>
-        <fullName>ROPS_GenerateInvoice_Error_LeaseDatesMissing</fullName>
+        <fullName>ROPS_NBA_Overdue_Title</fullName>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>ROPS_GenerateInvoice_Error_LeaseDatesMissing</shortDescription>
-        <value>Lease Start Date and End Date are required.</value>
+        <shortDescription>ROPS_NBA_Overdue_Title</shortDescription>
+        <value>Follow up overdue invoice</value>
     </labels>
     <labels>
-        <fullName>ROPS_GenerateInvoice_Error_LeaseNotActive</fullName>
+        <fullName>ROPS_NBA_Task_Description</fullName>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>ROPS_GenerateInvoice_Error_LeaseNotActive</shortDescription>
-        <value>Only Active leases can generate invoices.</value>
+        <shortDescription>ROPS_NBA_Task_Description</shortDescription>
+        <value>Please follow up with the tenant about the overdue invoice</value>
     </labels>
     <labels>
-        <fullName>ROPS_GenerateInvoice_Error_RentMissing</fullName>
+        <fullName>ROPS_NBA_Task_Subject</fullName>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>ROPS_GenerateInvoice_Error_RentMissing</shortDescription>
-        <value>Monthly Rent is missing. Enter an Amount to continue.</value>
-    </labels>
-    <labels>
-        <fullName>ROPS_GenerateInvoice_NoAccess</fullName>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>ROPS_GenerateInvoice_NoAccess</shortDescription>
-        <value>You do not have access to run the Invoice Wizard.</value>
-    </labels>
-    <labels>
-        <fullName>ROPS_GenerateInvoice_OpenExisting</fullName>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>ROPS_GenerateInvoice_OpenExisting</shortDescription>
-        <value>Open existing invoice</value>
-    </labels>
-    <labels>
-        <fullName>ROPS_GenerateInvoice_Success</fullName>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>ROPS_GenerateInvoice_Success</shortDescription>
-        <value>Invoice created successfully.</value>
-    </labels>
-    <labels>
-        <fullName>ROPS_GenerateInvoice_Title</fullName>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>ROPS_GenerateInvoice_Title</shortDescription>
-        <value>Generate Monthly Invoice</value>
-    </labels>
-    <labels>
-        <fullName>RenterOps_Lease_AssetChangeBlocked_Invoices</fullName>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>RenterOps_Lease_AssetChangeBlocked_Invoices</shortDescription>
-        <value>Cannot change the rental asset because invoices already exist for this lease.</value>
-    </labels>
-     <labels>
-        <fullName>ROPS_PaymentAmountExceedsOutstanding_Error</fullName>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>ROPS_PaymentAmountExceedsOutstanding_Error</shortDescription>
-        <value>Payment amount cannot exceed the invoice outstanding amount.</value>
-    </labels>
-    <labels>
-        <fullName>RenterOps_Invoice_StatusChangeBlocked_Paid</fullName>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Block reopening of paid invoices</shortDescription>
-        <value>Cannot change this Invoice status because it is already paid.</value>
+        <shortDescription>ROPS_NBA_Task_Subject</shortDescription>
+        <value>Follow up: Overdue Invoice</value>
     </labels>
 </CustomLabels>

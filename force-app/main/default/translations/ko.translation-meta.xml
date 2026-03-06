@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Translations xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customLabels>
+        <name>ROPS_NBA_Overdue_Title</name>
+        <label>연체된 청구서 후속 조치</label>
+    </customLabels>
+    <customLabels>
+        <name>ROPS_NBA_Overdue_Description</name>
+        <label>이 연체된 청구서에 대한 후속 작업을 생성합니다.</label>
+    </customLabels>
+    <customLabels>
+        <name>ROPS_NBA_Overdue_ActionLabel</name>
+        <label>후속 작업 생성</label>
+    </customLabels>
+    <customLabels>
+        <name>ROPS_NBA_Task_Subject</name>
+        <label>후속 조치: 연체된 청구서</label>
+    </customLabels>
+    <customLabels>
+        <name>ROPS_NBA_Task_Description</name>
+        <label>연체된 청구서와 관련해 세입자에게 연락해 주세요.</label>
+    </customLabels>
+</Translations>

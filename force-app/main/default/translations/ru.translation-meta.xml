@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Translations xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customLabels>
+        <name>ROPS_NBA_Overdue_Title</name>
+        <label>Связаться по просроченному счету</label>
+    </customLabels>
+    <customLabels>
+        <name>ROPS_NBA_Overdue_Description</name>
+        <label>Создает задачу для последующего контакта по этому просроченному счету.</label>
+    </customLabels>
+    <customLabels>
+        <name>ROPS_NBA_Overdue_ActionLabel</name>
+        <label>Создать задачу</label>
+    </customLabels>
+    <customLabels>
+        <name>ROPS_NBA_Task_Subject</name>
+        <label>Контроль: Просроченный счет</label>
+    </customLabels>
+    <customLabels>
+        <name>ROPS_NBA_Task_Description</name>
+        <label>Свяжитесь с арендатором по поводу просроченного счета.</label>
+    </customLabels>
+</Translations>

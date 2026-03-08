@@ -112,6 +112,83 @@
         <shortDescription>Block reopening of paid invoices</shortDescription>
         <value>Cannot change this Invoice status because it is already paid.</value>
     </labels>
+        <labels>
+        <fullName>ROPS_RecordPayment_Error_AmountInvalid</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ROPS_RecordPayment_Error_AmountInvalid</shortDescription>
+        <value>Payment amount must be greater than 0.</value>
+    </labels>
+    <labels>
+        <fullName>ROPS_RecordPayment_Error_DuplicatePayment</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ROPS_RecordPayment_Error_DuplicatePayment</shortDescription>
+        <value>A payment already exists for this invoice with the same amount and date.</value>
+    </labels>
+    <labels>
+        <fullName>ROPS_RecordPayment_Error_InvoiceMissing</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ROPS_RecordPayment_Error_InvoiceMissing</shortDescription>
+        <value>Invoice is required</value>
+    </labels>
+    <labels>
+        <fullName>ROPS_RecordPayment_Error_InvoiceNotEligible</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ROPS_RecordPayment_Error_InvoiceNotEligible</shortDescription>
+        <value>Only eligible invoices can accept payments</value>
+    </labels>
+    <labels>
+        <fullName>ROPS_RecordPayment_Error_OverpaymentNotAllowed</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ROPS_RecordPayment_Error_OverpaymentNotAllowed</shortDescription>
+        <value>Payment exceeds outstanding amount.</value>
+    </labels>
+    <labels>
+        <fullName>ROPS_RecordPayment_Error_PaymentDateMissing</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ROPS_RecordPayment_Error_PaymentDateMissing</shortDescription>
+        <value>Payment date is required</value>
+    </labels>
+    <labels>
+        <fullName>ROPS_RecordPayment_NoAccess</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ROPS_RecordPayment_NoAccess</shortDescription>
+        <value>You do not have access to run the Payment Wizard</value>
+    </labels>
+    <labels>
+<fullName>ROPS_RecordPayment_OpenExisting</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ROPS_RecordPayment_OpenExisting</shortDescription>
+        <value>Open existing payment</value>
+    </labels>
+    <labels>
+        <fullName>ROPS_RecordPayment_Success</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ROPS_RecordPayment_Success</shortDescription>
+        <value>Payment recorded successfully</value>
+    </labels>
+    <labels>
+        <fullName>ROPS_RecordPayment_Title</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ROPS_RecordPayment_Title</shortDescription>
+        <value>Record Payment</value>
+    </labels>
+    <labels>
+        <fullName>RenterOps_Invoice_StatusChangeBlocked_Paid</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Block reopening of paid invoices</shortDescription>
+        <value>Cannot change this Invoice status because it is already paid.</value>
+    </labels>
     <labels>
         <fullName>RenterOps_LeaseWizard_AssetConflict</fullName>
         <language>en_US</language>

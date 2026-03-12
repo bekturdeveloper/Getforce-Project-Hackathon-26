@@ -2,16 +2,18 @@ name: Deploy to AgentforceOrg environment on push to main or stage
 
 on:
   push:
-    branches: 
+    branches:
       - main
       - stage
+      - mairamDev
     paths:
       - 'force-app/**'
 
 jobs:
   Deploy-to-sffnoobs-environment:
     runs-on: ubuntu-latest
-    environment: sffnoobs
+    environment:
+  name: ${{ github.ref == 'refs/heads/mairamDev' && 'student-dev' || 'sffnoobs' }}
 
     steps:
       - uses: actions/setup-node@v3

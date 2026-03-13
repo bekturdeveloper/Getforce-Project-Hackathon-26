@@ -14,25 +14,26 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: ${{ github.ref == 'refs/heads/mairamDev' && 'student-dev' || 'sffnoobs' }}
+
     steps:
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: 'Checkout source code'
+      - name: Checkout source code
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: 'Install Salesforce CLI'
+      - name: Install Salesforce CLI
         run: npm install @salesforce/cli --global
 
-      - name: 'Install sfdx-git-delta'
+      - name: Install sfdx-git-delta
         run: |
           echo Y | sf plugins install sfdx-git-delta
           sf plugins
 
-      - name: 'Create delta packages'
+      - name: Create delta packages
         run: |
           mkdir -p changed-sources
           sf sgd source delta \
@@ -43,7 +44,7 @@ jobs:
             --source force-app/
           echo "[INFO] Diff generated"
 
-      - name: 'Authenticate with JWT'
+      - name: Authenticate with JWT
         run: |
           echo "${{ secrets.JWT_SERVER_KEY }}" > server.key
           sf org login jwt \
@@ -52,23 +53,24 @@ jobs:
             --client-id "${{ secrets.CONSUMER_KEY }}" \
             --instance-url "${{ vars.INSTANCE_URL }}" \
             --set-default
-- name: 'Deploy to org'
-  run: |
-    if [ ! -d "changed-sources/force-app" ] || [ -z "$(ls -A changed-sources/force-app 2>/dev/null)" ]; then
-      echo "[INFO] No metadata changes detected. Skipping deploy."
-      exit 0
-    fi
 
-    if [ "${{ github.ref }}" == "refs/heads/mairamDev" ]; then
-      echo "[INFO] Deploying to student-dev without tests"
-      sf project deploy start \
-        --source-dir changed-sources/force-app \
-        --test-level NoTestRun \
-        --wait 60
-    else
-      echo "[INFO] Deploying with tests (stage/prod)"
-      sf project deploy start \
-        --source-dir changed-sources/force-app \
-        --test-level RunLocalTests \
-        --wait 60
-    fi
+      - name: Deploy to org
+        run: |
+          if [ ! -d "changed-sources/force-app" ] || [ -z "$(ls -A changed-sources/force-app 2>/dev/null)" ]; then
+            echo "[INFO] No metadata changes detected. Skipping deploy."
+            exit 0
+          fi
+
+          if [ "${{ github.ref }}" == "refs/heads/mairamDev" ]; then
+            echo "[INFO] Deploying to student-dev without tests"
+            sf project deploy start \
+              --source-dir changed-sources/force-app \
+              --test-level NoTestRun \
+              --wait 60
+          else
+            echo "[INFO] Deploying with tests (stage/prod)"
+            sf project deploy start \
+              --source-dir changed-sources/force-app \
+              --test-level RunLocalTests \
+              --wait 60
+          fi

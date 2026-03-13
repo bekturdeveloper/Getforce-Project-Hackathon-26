@@ -1,4 +1,4 @@
-name: Deploy to AgentforceOrg environment on push to main or stage
+name: Deploy to Salesforce
 
 on:
   push:
@@ -10,10 +10,9 @@ on:
       - 'force-app/**'
 
 jobs:
-  Deploy-to-sffnoobs-environment:
+  deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: ${{ github.ref == 'refs/heads/mairamDev' && 'student-dev' }}
+    environment: ${{ github.ref == 'refs/heads/main' && 'prod' || github.ref == 'refs/heads/stage' && 'stage' || 'student-dev' }}
 
     steps:
       - uses: actions/setup-node@v3
@@ -42,7 +41,6 @@ jobs:
             --output changed-sources/ \
             --generate-delta \
             --source force-app/
-          echo "[INFO] Diff generated"
 
       - name: Authenticate with JWT
         run: |
@@ -56,22 +54,21 @@ jobs:
 
       - name: Deploy to org
         run: |
-          if [ ! -f "changed-sources/package/package.xml" ]; then
-            echo "[INFO] No package.xml generated. Skipping deploy."
+          if [ ! -d "changed-sources/force-app" ] || [ -z "$(ls -A changed-sources/force-app 2>/dev/null)" ]; then
+            echo "No metadata changes detected. Skipping deploy."
             exit 0
           fi
-      
+
           if [ "${{ github.ref }}" == "refs/heads/mairamDev" ]; then
-            echo "[INFO] Deploying to student-dev without tests"
+            echo "Deploying to student-dev without tests"
             sf project deploy start \
-              --manifest changed-sources/package/package.xml \
+              --source-dir changed-sources/force-app \
               --test-level NoTestRun \
               --wait 60
           else
-            echo "[INFO] Deploying with tests (stage/prod)"
+            echo "Deploying with tests"
             sf project deploy start \
-              --manifest changed-sources/package/package.xml \
+              --source-dir changed-sources/force-app \
               --test-level RunLocalTests \
               --wait 60
           fi
-

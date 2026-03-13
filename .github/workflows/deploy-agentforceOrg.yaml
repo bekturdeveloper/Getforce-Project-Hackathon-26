@@ -56,21 +56,22 @@ jobs:
 
       - name: Deploy to org
         run: |
-          if [ ! -d "changed-sources/force-app" ] || [ -z "$(ls -A changed-sources/force-app 2>/dev/null)" ]; then
-            echo "[INFO] No metadata changes detected. Skipping deploy."
+          if [ ! -f "changed-sources/package/package.xml" ]; then
+            echo "[INFO] No package.xml generated. Skipping deploy."
             exit 0
           fi
-
+      
           if [ "${{ github.ref }}" == "refs/heads/mairamDev" ]; then
             echo "[INFO] Deploying to student-dev without tests"
             sf project deploy start \
-              --source-dir changed-sources/force-app \
+              --manifest changed-sources/package/package.xml \
               --test-level NoTestRun \
               --wait 60
           else
             echo "[INFO] Deploying with tests (stage/prod)"
-              sf project deploy start \
-                --manifest changed-sources/package/package.xml \
-                --test-level NoTestRun \
-                --wait 60
+            sf project deploy start \
+              --manifest changed-sources/package/package.xml \
+              --test-level RunLocalTests \
+              --wait 60
           fi
+

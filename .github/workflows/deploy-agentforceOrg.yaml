@@ -52,15 +52,23 @@ jobs:
             --client-id "${{ secrets.CONSUMER_KEY }}" \
             --instance-url "${{ vars.INSTANCE_URL }}" \
             --set-default
+- name: 'Deploy to org'
+  run: |
+    if [ ! -d "changed-sources/force-app" ] || [ -z "$(ls -A changed-sources/force-app 2>/dev/null)" ]; then
+      echo "[INFO] No metadata changes detected. Skipping deploy."
+      exit 0
+    fi
 
-      - name: 'Deploy to org'
-        run: |
-          if [ ! -d "changed-sources/force-app" ] || [ -z "$(ls -A changed-sources/force-app 2>/dev/null)" ]; then
-            echo "[INFO] No metadata changes detected. Skipping deploy."
-            exit 0
-          fi
-
-          sf project deploy start \
-            --source-dir changed-sources/force-app \
-            --test-level RunLocalTests \
-            --wait 60
+    if [ "${{ github.ref }}" == "refs/heads/mairamDev" ]; then
+      echo "[INFO] Deploying to student-dev without tests"
+      sf project deploy start \
+        --source-dir changed-sources/force-app \
+        --test-level NoTestRun \
+        --wait 60
+    else
+      echo "[INFO] Deploying with tests (stage/prod)"
+      sf project deploy start \
+        --source-dir changed-sources/force-app \
+        --test-level RunLocalTests \
+        --wait 60
+    fi

@@ -1,37 +1,32 @@
-name: Deploy to AgentforceOrg environment on push to main or stage
+name: Deploy to AgentforceOrg
 
 on:
-  push:
-    branches: 
-      - main
-      - stage
-    paths:
-      - 'force-app/**'
+  workflow_dispatch:
 
 jobs:
-  Deploy-to-sffnoobs-environment:
+  deploy-to-agentforce:
     runs-on: ubuntu-latest
-    environment: sffnoobs
+    environment: AgentforceOrg
 
     steps:
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: 'Checkout source code'
+      - name: Checkout source code
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: 'Install Salesforce CLI'
+      - name: Install Salesforce CLI
         run: npm install @salesforce/cli --global
 
-      - name: 'Install sfdx-git-delta'
+      - name: Install sfdx-git-delta
         run: |
           echo Y | sf plugins install sfdx-git-delta
           sf plugins
 
-      - name: 'Create delta packages'
+      - name: Create delta packages
         run: |
           mkdir -p changed-sources
           sf sgd source delta \
@@ -40,9 +35,8 @@ jobs:
             --output changed-sources/ \
             --generate-delta \
             --source force-app/
-          echo "[INFO] Diff generated"
 
-      - name: 'Authenticate with JWT'
+      - name: Authenticate with JWT
         run: |
           echo "${{ secrets.JWT_SERVER_KEY }}" > server.key
           sf org login jwt \
@@ -52,10 +46,10 @@ jobs:
             --instance-url "${{ vars.INSTANCE_URL }}" \
             --set-default
 
-      - name: 'Deploy to org'
+      - name: Deploy to AgentforceOrg
         run: |
           if [ ! -d "changed-sources/force-app" ] || [ -z "$(ls -A changed-sources/force-app 2>/dev/null)" ]; then
-            echo "[INFO] No metadata changes detected. Skipping deploy."
+            echo "No metadata changes detected. Skipping deploy."
             exit 0
           fi
 

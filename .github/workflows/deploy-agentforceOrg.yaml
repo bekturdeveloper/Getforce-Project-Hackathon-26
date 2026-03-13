@@ -73,3 +73,4 @@ jobs:
               --source-dir changed-sources/force-app \
               --test-level RunLocalTests \
               --wait 60
+          fi

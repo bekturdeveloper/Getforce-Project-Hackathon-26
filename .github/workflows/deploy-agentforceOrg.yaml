@@ -13,7 +13,7 @@ jobs:
   Deploy-to-sffnoobs-environment:
     runs-on: ubuntu-latest
     environment:
-      name: ${{ github.ref == 'refs/heads/mairamDev' && 'student-dev' || 'sffnoobs' }}
+      name: ${{ github.ref == 'refs/heads/mairamDev' && 'student-dev' }}
 
     steps:
       - uses: actions/setup-node@v3

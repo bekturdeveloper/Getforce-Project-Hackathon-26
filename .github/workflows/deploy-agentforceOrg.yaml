@@ -53,7 +53,7 @@ jobs:
             --username "${{ secrets.DEPLOYMENT_USER_NAME }}" \
             --jwt-key-file server.key \
             --client-id "${{ secrets.CONSUMER_KEY }}" \
-            --instance-url "${{ secrets.INSTANCE_URL }}" \
+            --instance-url "${{ vars.INSTANCE_URL }}" \
             --set-default
 
       # Deploy changed metadata to AgentforceOrg

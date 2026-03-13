@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Translations xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customLabels>
+        <name>ROPS_NBA_Overdue_Title</name>
+        <label>Überfällige Rechnung nachverfolgen</label>
+    </customLabels>
+    <customLabels>
+        <name>ROPS_NBA_Overdue_Description</name>
+        <label>Erstellt eine Follow-up-Aufgabe für diese überfällige Rechnung.</label>
+    </customLabels>
+    <customLabels>
+        <name>ROPS_NBA_Overdue_ActionLabel</name>
+        <label>Follow-up-Aufgabe erstellen</label>
+    </customLabels>
+    <customLabels>
+        <name>ROPS_NBA_Task_Subject</name>
+        <label>Nachverfolgung: Überfällige Rechnung</label>
+    </customLabels>
+    <customLabels>
+        <name>ROPS_NBA_Task_Description</name>
+        <label>Bitte den Mieter wegen der überfälligen Rechnung kontaktieren.</label>
+    </customLabels>
+</Translations>

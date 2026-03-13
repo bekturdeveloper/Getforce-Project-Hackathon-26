@@ -74,3 +74,4 @@ jobs:
               --test-level RunLocalTests \
               --wait 60
           fi
+          //test

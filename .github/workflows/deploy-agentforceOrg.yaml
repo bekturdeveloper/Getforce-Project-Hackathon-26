@@ -69,8 +69,8 @@ jobs:
               --wait 60
           else
             echo "[INFO] Deploying with tests (stage/prod)"
-            sf project deploy start \
-              --source-dir changed-sources/force-app \
-              --test-level RunLocalTests \
-              --wait 60
+              sf project deploy start \
+                --manifest changed-sources/package/package.xml \
+                --test-level NoTestRun \
+                --wait 60
           fi

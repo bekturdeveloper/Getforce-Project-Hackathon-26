@@ -3,7 +3,7 @@
     <fullName>Test_Opp__c</fullName>
     <externalId>false</externalId>
     <label>Test Opp</label>
-    <length>20</length>
+    <length>23</length>
     <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>
     <trackTrending>false</trackTrending>

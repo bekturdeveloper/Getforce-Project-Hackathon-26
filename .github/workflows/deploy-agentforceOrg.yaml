@@ -13,27 +13,33 @@ jobs:
 
     steps:
 
+      # 1️⃣ Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
+      # Setup Node.js
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
+      # Install Salesforce CLI
       - name: Install Salesforce CLI
         run: npm install @salesforce/cli --global
 
+      # Install sfdx-git-delta plugin
       - name: Install sfdx-git-delta
         run: |
           echo Y | sf plugins install sfdx-git-delta
           sf plugins
 
+      # Fetch all branches
       - name: Fetch all branches
         run: git fetch --all
 
+      # Create delta package (только Account)
       - name: Create delta package
         run: |
           mkdir -p changed-sources
@@ -42,8 +48,10 @@ jobs:
             --to HEAD \
             --output changed-sources \
             --generate-delta \
-            --source force-app
+            --source force-app/objects/Account
+          echo "[INFO] Delta package generated for Account"
 
+      # Authenticate to Salesforce
       - name: Authenticate to Salesforce
         run: |
           echo "${{ secrets.JWT_SERVER_KEY }}" > server.key
@@ -54,10 +62,11 @@ jobs:
             --instance-url "${{ vars.INSTANCE_URL }}" \
             --set-default
 
+      # Deploy metadata
       - name: Deploy metadata
         run: |
           if [ ! -d "changed-sources/force-app" ] || [ -z "$(ls -A changed-sources/force-app 2>/dev/null)" ]; then
-            echo "[INFO] No metadata changes detected."
+            echo "[INFO] No metadata changes detected. Skipping deploy."
             exit 0
           fi
 

@@ -3,50 +3,48 @@ name: Deploy to AgentforceOrg
 on:
   push:
     branches:
-      - AgentforceOrg1  # Run when changes are pushed/merged to this branch
-  workflow_dispatch:  # Allow manual trigger
+      - AgentforceOrg1
+  workflow_dispatch:
 
 jobs:
   deploy-to-agentforce:
     runs-on: ubuntu-latest
-    environment: AgentforceOrg  # GitHub Environment with your org secrets
+    environment: AgentforceOrg
 
     steps:
-      # Set up Node.js
-      - uses: actions/setup-node@v3
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      # Checkout the repository
-      - name: Checkout source code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # Needed for sfdx-git-delta
-
-      # Install Salesforce CLI globally
       - name: Install Salesforce CLI
         run: npm install @salesforce/cli --global
 
-      # 4️⃣ Install sfdx-git-delta plugin
       - name: Install sfdx-git-delta
         run: |
           echo Y | sf plugins install sfdx-git-delta
           sf plugins
 
-      # Generate delta package for changed metadata
-      - name: Create delta packages
+      - name: Fetch all branches
+        run: git fetch --all
+
+      - name: Create delta package
         run: |
           mkdir -p changed-sources
           sf sgd source delta \
-            --to "HEAD" \
-            --from "HEAD~1" \
-            --output changed-sources/ \
+            --from origin/main \
+            --to HEAD \
+            --output changed-sources \
             --generate-delta \
-            --source force-app/
-          echo "[INFO] Delta package generated"
+            --source force-app
 
-      # Authenticate to AgentforceOrg using JWT
-      - name: Authenticate with JWT
+      - name: Authenticate to Salesforce
         run: |
           echo "${{ secrets.JWT_SERVER_KEY }}" > server.key
           sf org login jwt \
@@ -56,11 +54,10 @@ jobs:
             --instance-url "${{ vars.INSTANCE_URL }}" \
             --set-default
 
-      # Deploy changed metadata to AgentforceOrg
-      - name: Deploy to AgentforceOrg
+      - name: Deploy metadata
         run: |
           if [ ! -d "changed-sources/force-app" ] || [ -z "$(ls -A changed-sources/force-app 2>/dev/null)" ]; then
-            echo "[INFO] No metadata changes detected. Skipping deploy."
+            echo "[INFO] No metadata changes detected."
             exit 0
           fi
 

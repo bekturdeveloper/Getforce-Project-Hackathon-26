@@ -1,0 +1,58 @@
+name: Delta Deploy to Salesforce (ElamanDev)
+
+on:
+  push:
+    branches: [ ElamanDev ]
+    paths:
+      - 'force-app/**'
+
+jobs:
+  Deploy-to-Salesforce:
+    runs-on: ubuntu-latest
+    environment: ElamanDev 
+
+    steps:
+      - name: 'Setup Node.js'
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: 'Checkout source code'
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: '2'
+
+      - name: 'Install Salesforce CLI'
+        run: npm install @salesforce/cli --global
+
+      - name: 'Installing sfdx git delta'
+        run: | 
+            echo Y | sfdx plugins:install sfdx-git-delta
+            sfdx plugins
+
+      - name: 'Create delta packages'
+        run: | 
+            mkdir changed-sources
+            sf sgd source delta --to "HEAD" --from "HEAD~1" --output changed-sources/ --generate-delta --source force-app/
+            echo "[INFO] Diff generated in changed-sources/"
+
+      - name: 'Authenticate and Deploy'
+        run: |
+            echo "${{ secrets.JWT_SERVER_KEY_ELAMANDEV }}" > server.key
+            
+            sf org login jwt \
+              --username "${{ secrets.DEPLOYMENT_USER_NAME_ELAMANDEV }}" \
+              --jwt-key-file server.key \
+              --client-id "${{ secrets.CONSUMER_KEY_ELAMANDEV }}" \
+              --instance-url "${{ vars.INSTANCE_URL_ELAMANDEV }}" \
+              --set-default
+            
+            if [ ! -d "changed-sources/force-app" ]; then
+              echo "No metadata changes detected. Skipping deploy."
+              exit 0
+            fi
+            
+            sf project deploy start \
+              --source-dir changed-sources/force-app \
+              --test-level RunLocalTests \
+              --wait 10

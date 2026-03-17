@@ -11,8 +11,9 @@ on:
 
 jobs:
   deploy:
+    deploy:
     runs-on: ubuntu-latest
-    environment: ${{ github.ref == 'refs/heads/main' && 'prod' || github.ref == 'refs/heads/stage' && 'stage' || 'ElamanDev' }}
+    environment: ${{ github.ref == 'refs/heads/main' && 'prod'  github.ref == 'refs/heads/stage' && 'stage'  github.ref == 'refs/heads/ElamanDev' && 'ElamanDev' }}
 
     steps:
 

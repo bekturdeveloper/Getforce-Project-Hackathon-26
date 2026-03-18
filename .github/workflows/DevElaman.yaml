@@ -3,16 +3,16 @@ name: Deploy to DevElaman
 on:
   push:
     branches:
-      - DevElaman
+      - DevElaman # Триггер только на эту ветку
     paths:
       - 'force-app/**'
 
 jobs:
-  deploy: # This defines the job
+  deploy:
     runs-on: ubuntu-latest
-    environment: 'DevElaman'
+    environment: DevElaman # Используем настройки окружения DevElaman
           
-    steps: # This MUST be indented under 'deploy'
+    steps:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
@@ -56,21 +56,14 @@ jobs:
 
       - name: Deploy to org
         run: |
+          # Проверка на наличие изменений
           if [ ! -d "changed-sources/force-app" ] || [ -z "$(ls -A changed-sources/force-app 2>/dev/null)" ]; then
             echo "No metadata changes detected. Skipping deploy."
             exit 0
           fi
 
-          if [ "${{ github.ref }}" == "refs/heads/DevElaman" ]; then
-            echo "Deploying to DevElaman org without tests"
-            sf project deploy start \
-              --source-dir changed-sources/force-app \
-              --test-level NoTestRun \
-              --wait 60
-          else
-            echo "Deploying with tests"
-            sf project deploy start \
-              --source-dir changed-sources/force-app \
-              --test-level RunLocalTests \
-              --wait 60
-          fi
+          echo "Deploying changes to DevElaman org"
+          sf project deploy start \
+            --source-dir changed-sources/force-app \
+            --test-level NoTestRun \
+            --wait 60

@@ -10,13 +10,14 @@ on:
       - 'force-app/**'
 
 jobs:
-  deploy:
-    deploy:
+  deploy: # This defines the job
     runs-on: ubuntu-latest
-    environment: ${{ github.ref == 'refs/heads/main' && 'prod'  github.ref == 'refs/heads/stage' && 'stage'  github.ref == 'refs/heads/DevElaman' && 'DevElaman' }}
-
-    steps:
-
+    environment: >-
+      ${{ github.ref == 'refs/heads/main' && 'prod' || 
+          github.ref == 'refs/heads/stage' && 'stage' || 
+          'DevElaman' }}
+          
+    steps: # This MUST be indented under 'deploy'
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
@@ -46,7 +47,7 @@ jobs:
             --to HEAD \
             --output changed-sources/ \
             --generate-delta \
-            --source force-app/main/default
+            --source force-app/
 
       - name: Authenticate with JWT
         run: |
@@ -74,3 +75,7 @@ jobs:
           else
             echo "Deploying with tests"
             sf project deploy start \
+              --source-dir changed-sources/force-app \
+              --test-level RunLocalTests \
+              --wait 60
+          fi

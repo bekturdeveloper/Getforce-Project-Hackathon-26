@@ -3,8 +3,6 @@ name: Deploy to DevElaman
 on:
   push:
     branches:
-      - main
-      - stage
       - DevElaman
     paths:
       - 'force-app/**'
@@ -12,10 +10,7 @@ on:
 jobs:
   deploy: # This defines the job
     runs-on: ubuntu-latest
-    environment: >-
-      ${{ github.ref == 'refs/heads/main' && 'prod' || 
-          github.ref == 'refs/heads/stage' && 'stage' || 
-          'DevElaman' }}
+    environment: 'DevElaman'
           
     steps: # This MUST be indented under 'deploy'
       - name: Setup Node

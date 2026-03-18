@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Collection_Status__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+    OR(
+        ISPICKVAL(Status__c, &quot;Paid&quot;),
+        OutstandingAmount__c &lt;= 0
+    ),
+    &quot;Paid&quot;,
+    IF(
+        AND(
+            NOT(ISBLANK(DueDate__c)),
+            DueDate__c &lt; TODAY(),
+            OutstandingAmount__c &gt; 0
+        ),
+        &quot;Overdue&quot;,
+        &quot;Open&quot;
+    )
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Collection Status</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

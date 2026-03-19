@@ -3,7 +3,7 @@
     <fullName>CI_CD__c</fullName>
     <externalId>false</externalId>
     <label>CI CD</label>
-    <length>44</length>
+    <length>40</length>
     <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>
     <trackTrending>false</trackTrending>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Translations xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customLabels>
+        <name>ROPS_NBA_Overdue_Title</name>
+        <label>Relancer une facture en retard</label>
+    </customLabels>
+    <customLabels>
+        <name>ROPS_NBA_Overdue_Description</name>
+        <label>Crée une tâche de relance pour cette facture en retard.</label>
+    </customLabels>
+    <customLabels>
+        <name>ROPS_NBA_Overdue_ActionLabel</name>
+        <label>Créer une tâche de relance</label>
+    </customLabels>
+    <customLabels>
+        <name>ROPS_NBA_Task_Subject</name>
+        <label>Relance : Facture en retard</label>
+    </customLabels>
+    <customLabels>
+        <name>ROPS_NBA_Task_Description</name>
+        <label>Veuillez contacter le locataire concernant la facture en retard.</label>
+    </customLabels>
+</Translations>

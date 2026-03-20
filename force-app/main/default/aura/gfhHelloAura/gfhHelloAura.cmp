@@ -1,0 +1,5 @@
+<aura:component implements="flexipage:availableForAllPageTypes" access="global">
+    <lightning:card title="GFH Hello Aura">
+        <div class="slds-p-around_small">Hello from GFH Aura (demo)</div>
+    </lightning:card>
+</aura:component>

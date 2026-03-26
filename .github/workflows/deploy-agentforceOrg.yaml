@@ -3,13 +3,14 @@ name: Deploy to AgentforceOrg
 on:
   push:
     branches:
-      - AgentforceOrg1  # Run when changes are pushed/merged to this branch
-  workflow_dispatch:  # Allow manual trigger
+      - AgentforceOrg1
+      - AizadaDev2
+  workflow_dispatch: # Allow manual trigger
 
 jobs:
   deploy-to-agentforce:
     runs-on: ubuntu-latest
-    environment: AgentforceOrg  # GitHub Environment with your org secrets
+    environment: ${{ github.ref_name == 'AizadaDev2' && 'student-dev2' || 'AgentforceOrg' }}  # GitHub Environment with your org secrets
 
     steps:
       # Set up Node.js
